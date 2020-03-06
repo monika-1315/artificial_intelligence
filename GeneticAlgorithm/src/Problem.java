@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Problem {
 
@@ -109,6 +108,6 @@ public class Problem {
 	@Override
 	public String toString() {
 		return "Problem [name=" + name + ", type=" + type + ", comment=" + comment + ", dimension=" + dimension
-				+ ", edgeWeightType=" + edgeWeightType + ", nodeCoord=" + Arrays.toString(nodeCoord) + "]";
+				+ ", edgeWeightType=" + edgeWeightType +"]";
 	}
 }

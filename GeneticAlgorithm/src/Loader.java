@@ -71,6 +71,7 @@ public final class Loader {
 			}
 			line=scan.nextLine();
 		}
+		scan.close();
 		prob.evaluate();
 		return prob;
 	}
