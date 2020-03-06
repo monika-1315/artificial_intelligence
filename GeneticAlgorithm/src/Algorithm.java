@@ -2,14 +2,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Algorithm {
-	private Problem prob;
+	protected Problem prob;
 
 	public Algorithm(Problem prob) {
 		super();
 		this.prob = prob;
 	}
 
-	public ArrayList<Integer> randomInd() {
+	protected ArrayList<Integer> randomInd() {
 		ArrayList<Integer> indiv = new ArrayList<Integer>(prob.getDimension());
 		for (int i = 0; i < prob.getDimension(); i++) {
 			indiv.add(i);
@@ -51,8 +51,8 @@ public class Algorithm {
 			double bestDist= Integer.MAX_VALUE;
 			for(int y=0; y<prob.getDimension();y++) {
 				if(!indiv.contains(y)) {
-					if(prob.evals[indiv.get(i-1)][y]<bestDist) {
-						bestDist=prob.evals[indiv.get(i-1)][y];
+					if(prob.getEvals()[indiv.get(i-1)][y]<bestDist) {
+						bestDist=prob.getEvals()[indiv.get(i-1)][y];
 						nextInd=y;
 					}
 				}
