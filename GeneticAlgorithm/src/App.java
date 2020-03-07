@@ -9,7 +9,8 @@ public class App {
 		
 		Problem p = load.load();
 		System.out.println(p.toString());
-		GeneticAlgorithm galg= new GeneticAlgorithm(p, 10);
+		GeneticAlgorithm galg= new GeneticAlgorithm(p, 5, 0.5, 0.5,2);
+		//galg.run();
 		galg.crossing(new ArrayList<Integer>(Arrays.asList(0,1,2,3,4,5,6,7,8,9,10)), new ArrayList<Integer>(Arrays.asList(10,9,8,7,6,5,4,3,2,1,0)));
 //		Algorithm alg = new Algorithm(p);
 //		alg.randomMethod(10000);
