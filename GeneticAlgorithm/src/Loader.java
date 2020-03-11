@@ -42,8 +42,8 @@ public final class Loader {
 					prob.setDimension(Integer.parseInt(words[1]));
 					break;
 				case "EDGE_WEIGHT_TYPE":
-					if (words[1]=="EUC_2D") prob.setEdgeWeightType(true);
-					else if (words[1]=="GEO") prob.setEdgeWeightType(false);
+					if (words[1].equals("EUC_2D")) prob.setEdgeWeightType(true);
+					else if (words[1].equals("GEO")) prob.setEdgeWeightType(false);
 					break;
 				//case "DISPLAY_DATA_TYPE":
 				case "NODE_COORD_SECTION":

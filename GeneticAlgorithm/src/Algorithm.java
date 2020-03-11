@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Algorithm {
+public abstract class Algorithm {
 	protected Problem prob;
 
 	public Algorithm(Problem prob) {
@@ -9,6 +9,8 @@ public class Algorithm {
 		this.prob = prob;
 	}
 
+	public abstract void run();
+	
 	protected ArrayList<Integer> randomInd() {
 		ArrayList<Integer> indiv = new ArrayList<Integer>(prob.getDimension());
 		for (int i = 0; i < prob.getDimension(); i++) {
@@ -18,31 +20,7 @@ public class Algorithm {
 		return indiv;
 	}
 
-	public void randomMethod(int cnt) {
-		ArrayList<Integer> bestInd = new ArrayList<Integer>(prob.getDimension());
-		double bestEval = Integer.MAX_VALUE;
-		ArrayList<Integer> currInd;
-		double currEval;
-		for (int i = 0; i < cnt; i++) {
-			currInd = randomInd();
-			currEval = prob.evalInd(currInd);
-			if (currEval < bestEval) {
-				bestEval = currEval;
-				bestInd = currInd;
-			}
-		}
-		System.out.println("After random " + cnt + " : best eval: " + bestEval + " indiv: " + bestInd);
-	}
-
-	public void greedyAlg(int startCity) {
-		ArrayList<Integer> currInd = new ArrayList<Integer>(prob.getDimension());
-		
-		currInd =greedyInd(startCity);
-		double currEval = prob.evalInd(currInd);
-		
-		System.out.println("Greedy: best eval: " + currEval + " indiv: " + currInd);
-	}
-	private ArrayList<Integer> greedyInd(int startCity){
+	protected ArrayList<Integer> greedyInd(int startCity){
 		ArrayList<Integer> indiv = new ArrayList<Integer>(prob.getDimension());
 		indiv.add(startCity);
 		

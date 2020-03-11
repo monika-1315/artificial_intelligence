@@ -31,9 +31,11 @@ public class GeneticAlgorithm extends Algorithm {
 				evaluatePop();
 			}
 		}
+		System.out.println("GA: best eval: "+ currentBestEval + " individual: "+currentBest);
 	}
 
 	private void makeInitPop() {
+		//population.add(greedyInd(((int) Math.floor(Math.random() * prob.getDimension()))));
 		for (int i = 0; i < popSize; i++) {
 			population.add(this.randomInd());
 		}
@@ -88,7 +90,7 @@ public class GeneticAlgorithm extends Algorithm {
 	}
 
 	private ArrayList<Integer> getParent() {
-		return tournament(2);
+		return tournament(5);
 	}
 	
 	private ArrayList<Integer> tournament(int n){
@@ -109,9 +111,7 @@ public class GeneticAlgorithm extends Algorithm {
 	}
 
 	/** Crossing operator PMX */
-	public ArrayList<ArrayList<Integer>> crossing(ArrayList<Integer> parent1, ArrayList<Integer> parent2) {
-		System.out.println(parent1);
-		System.out.println(parent2);
+	private ArrayList<ArrayList<Integer>> crossing(ArrayList<Integer> parent1, ArrayList<Integer> parent2) {
 		ArrayList<ArrayList<Integer>> offspring = new ArrayList<ArrayList<Integer>>(2);
 		int cut1 = (int) Math.floor(Math.random() * prob.getDimension());
 		int cut2 = (int) Math.floor(Math.random() * prob.getDimension());
@@ -120,7 +120,7 @@ public class GeneticAlgorithm extends Algorithm {
 			cut1 = cut2;
 			cut2 = temp;
 		}
-		System.out.println("cuts: " + cut1 + " " + cut2);
+//		System.out.println("cuts: " + cut1 + " " + cut2);
 		ArrayList<Integer> child1 = new ArrayList<Integer>(prob.getDimension());
 		ArrayList<Integer> child2 = new ArrayList<Integer>(prob.getDimension());
 		List<Integer> subsection1 = parent1.subList(cut1, cut2);
@@ -144,8 +144,8 @@ public class GeneticAlgorithm extends Algorithm {
 				child2.add(nextCity);
 			}
 		} // for
-		System.out.println(child1);
-		System.out.println(child2);
+//		System.out.println(child1);
+//		System.out.println(child2);
 		offspring.add(child1);
 		offspring.add(child2);
 		return offspring;
