@@ -17,6 +17,7 @@ public class GeneticAlgorithm extends Algorithm {
 	private double popSum;
 	private double popBest;
 	private double popWorst;
+	private boolean debug=false;
 
 	public GeneticAlgorithm(Problem prob, int populationSize, double crossProb, double mutProb, int genNum) {
 		super(prob);
@@ -41,40 +42,51 @@ public class GeneticAlgorithm extends Algorithm {
 		System.out.println("GA: best eval: " + currentBestEval + " individual: " + currentBest);
 	}
 
+	/**Test method only to show and print to check whether all the operators work as they should*/
 	public void testOperators() {
-		if (this.prob.getDimension() != 11) {
+		if (this.prob.getDimension() != 11) {//exemplary individuals are for berlin11
 			System.err.println("Test works only for berlin 11");
 			return;
 		}
+		debug=true;
 		System.out.println("TEST how operators work:");
 		population = new ArrayList<ArrayList<Integer>>(popSize);
 		popEvals = new ArrayList<Double>(popSize);
 		population.add(new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
 		population.add(new ArrayList<Integer>(Arrays.asList(10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)));
+		population.add(new ArrayList<Integer>(Arrays.asList(10, 8, 3, 9, 7, 6, 5, 4, 1, 2, 0)));
 		population.add(new ArrayList<Integer>(Arrays.asList(10, 1, 6, 0, 2, 7, 8, 9, 4, 5, 3)));//greedy individual
-		popSize=3;
+		int tempPopSize=popSize;
+		popSize=4;
 		System.out.println("Population: "+ population);
 		evaluatePop();
 		System.out.println("Population evaluations: "+popEvals);
 		System.out.println("Best: "+currentBestEval+" Worst: "+popWorst);
-		System.out.println("Tournament 3: "+tournament(3)+" , "+tournament(3));
-		System.out.println("Tournament 1 - random: "+tournament(1)+" , "+tournament(1)+" , "+tournament(1));
-		System.out.println("Roulette:");
+		System.out.println("Tournament 4: "+tournament(4)+" , "+tournament(4)+" , "+tournament(4));
+		System.out.println("Tournament 1 - random: "+tournament(1)+" , "+tournament(1)+" , "+tournament(1)+" , "+tournament(1));
 		System.out.println(roulette());
 		System.out.println(roulette());
 		System.out.println(roulette());
 		System.out.println(roulette());
 		System.out.println(roulette());
-		System.out.println(roulette());
-		System.out.println(roulette());
-		System.out.println(roulette());
-	
 		
+		crossing(tournament(3), tournament(3));
+		crossing(tournament(4), tournament(1));
+		crossing(tournament(4), tournament(1));
+		
+		System.out.println(mutate(population.get(0)));
+		System.out.println(mutate(population.get(0)));
+		System.out.println(mutate(tournament(2)));
+		System.out.println(mutate(tournament(2)));
+		System.out.println();
+		popSize=tempPopSize;
+		population = new ArrayList<ArrayList<Integer>>(popSize);
+		popEvals = new ArrayList<Double>(popSize);
+		debug=false;
 	}
 
 	private void makeInitPop() {
-		// population.add(greedyInd(((int) Math.floor(Math.random() *
-		// prob.getDimension()))));
+		// population.add(greedyInd(((int) Math.floor(Math.random() *prob.getDimension()))));
 		for (int i = 0; i < popSize; i++) {
 			population.add(this.randomInd());
 		}
@@ -125,16 +137,19 @@ public class GeneticAlgorithm extends Algorithm {
 	}
 
 	private ArrayList<Integer> mutate(ArrayList<Integer> indiv) {
+		ArrayList<Integer> individual=(ArrayList<Integer>) indiv.clone();
 		int loc1 = (int) Math.floor(Math.random() * prob.getDimension());
 		int loc2 = (int) Math.floor(Math.random() * prob.getDimension());
 		while (loc1 == loc2) {
 			loc2 = (int) Math.floor(Math.random() * prob.getDimension());
 		}
-		Integer temp = indiv.get(loc1);
-		indiv.set(loc1, indiv.get(loc2));
-		indiv.set(loc2, temp);
+		if (debug)
+			System.out.print("Mutate "+indiv+ " swap "+loc1+" and "+loc2+": ");
+		Integer temp = individual.get(loc1);
+		individual.set(loc1, individual.get(loc2));
+		individual.set(loc2, temp);
 
-		return indiv;
+		return individual;
 	}
 
 	private ArrayList<Integer> getParent() {
@@ -163,13 +178,13 @@ public class GeneticAlgorithm extends Algorithm {
 	private ArrayList<Integer> roulette() {
 		double sum = -popSum + popSize * (popWorst + 1);
 		double random = Math.random() * sum;
-		System.out.print("Roulette - random="+random);
+		if(debug) System.out.print("Roulette: random = "+random);
 		for (int i = 0; i < popSize; i++) {
 			double indivPart=(popWorst - popEvals.get(i) + 1);
 			random -= indivPart;
-			System.out.print(" Individual: "+i+" has "+indivPart+"  "+random);
+			if(debug) System.out.print(" Individual "+i+" has "+indivPart);
 			if (random <= 0) {
-				System.out.print("Wins "+i);
+				if(debug) System.out.print("\nWins "+i);
 				return population.get(i);
 				
 			}
@@ -179,6 +194,10 @@ public class GeneticAlgorithm extends Algorithm {
 
 	/** Crossing operator PMX */
 	private ArrayList<ArrayList<Integer>> crossing(ArrayList<Integer> parent1, ArrayList<Integer> parent2) {
+		if(debug) {
+			System.out.println("Crossing\nParent1: "+parent1);
+			System.out.println("Parent2: "+parent2);
+		}
 		ArrayList<ArrayList<Integer>> offspring = new ArrayList<ArrayList<Integer>>(2);
 		int cut1 = (int) Math.floor(Math.random() * prob.getDimension());
 		int cut2 = (int) Math.floor(Math.random() * prob.getDimension());
@@ -187,7 +206,7 @@ public class GeneticAlgorithm extends Algorithm {
 			cut1 = cut2;
 			cut2 = temp;
 		}
-//		System.out.println("cuts: " + cut1 + " " + cut2);
+		if(debug) System.out.println("cuts: " + cut1 + " " + cut2);
 		ArrayList<Integer> child1 = new ArrayList<Integer>(prob.getDimension());
 		ArrayList<Integer> child2 = new ArrayList<Integer>(prob.getDimension());
 		List<Integer> subsection1 = parent1.subList(cut1, cut2);
@@ -211,8 +230,11 @@ public class GeneticAlgorithm extends Algorithm {
 				child2.add(nextCity);
 			}
 		} // for
-//		System.out.println(child1);
-//		System.out.println(child2);
+		if(debug) {
+			System.out.println("Parent1: "+child1);
+			System.out.println("Parent2: "+child2);
+		}
+	
 		offspring.add(child1);
 		offspring.add(child2);
 		return offspring;
