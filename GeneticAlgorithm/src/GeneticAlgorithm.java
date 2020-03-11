@@ -88,12 +88,30 @@ public class GeneticAlgorithm extends Algorithm {
 	}
 
 	private ArrayList<Integer> getParent() {
-		// TODO Auto-generated method stub
-		return null;
+		return tournament(2);
+	}
+	
+	private ArrayList<Integer> tournament(int n){
+		ArrayList<Integer> selected = new ArrayList<Integer>();
+		selected.add((int)Math.floor(Math.random() * popSize));
+		for (int i=1; i<n;i++) {
+			selected.add((int)Math.floor(Math.random() * popSize));
+		}
+		int bestInd=selected.get(0);
+		double bestEval=popEvals.get(bestInd);
+		for (int i=1; i<n; i++) {
+			if(popEvals.get(selected.get(i))<bestEval){
+				bestInd=selected.get(i);
+				bestEval=popEvals.get(bestInd);
+			}
+		}
+		return population.get(bestInd);
 	}
 
 	/** Crossing operator PMX */
 	public ArrayList<ArrayList<Integer>> crossing(ArrayList<Integer> parent1, ArrayList<Integer> parent2) {
+		System.out.println(parent1);
+		System.out.println(parent2);
 		ArrayList<ArrayList<Integer>> offspring = new ArrayList<ArrayList<Integer>>(2);
 		int cut1 = (int) Math.floor(Math.random() * prob.getDimension());
 		int cut2 = (int) Math.floor(Math.random() * prob.getDimension());
@@ -113,18 +131,17 @@ public class GeneticAlgorithm extends Algorithm {
 				child1.add(subsection2.get(i - cut1));
 				child2.add(subsection1.get(i - cut1));
 			} else {
-				if (!subsection2.contains(parent1.get(i))) {
-					child1.add(parent1.get(i));
-				} else {
-					child1.add(subsection1.get(subsection2.indexOf(parent1.get(i))));
-				}
+				int nextCity=parent1.get(i);
+				while (subsection2.contains(nextCity)) {
+					nextCity=subsection1.get(subsection2.indexOf(nextCity));
+				} 
+				child1.add(nextCity);
 
-				if (!subsection1.contains(parent2.get(i))) {
-					child2.add(parent2.get(i));
-				} else {
-					child2.add(subsection2.get(subsection1.indexOf(parent2.get(i))));
-				}
-
+				nextCity=parent2.get(i);
+				while (subsection1.contains(nextCity)) {
+					nextCity=subsection2.get(subsection1.indexOf(nextCity));
+				} 
+				child2.add(nextCity);
 			}
 		} // for
 		System.out.println(child1);
