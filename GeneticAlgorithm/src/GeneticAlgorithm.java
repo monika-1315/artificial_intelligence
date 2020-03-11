@@ -53,9 +53,43 @@ public class GeneticAlgorithm extends Algorithm {
 	private ArrayList<ArrayList<Integer>> makeNewPopulation() {
 		ArrayList<ArrayList<Integer>> newPop=new ArrayList<ArrayList<Integer>>(prob.getDimension());
 		while(newPop.size()<popSize) {
-			
+			ArrayList<Integer> indiv1 = getParent();
+			ArrayList<Integer> indiv2 = getParent();
+			if(Math.random()<=crossProb) {
+				 ArrayList<ArrayList<Integer>> children = crossing(indiv1, indiv2);
+				 indiv1=children.get(0);
+				 indiv2=children.get(1);
+			}
+			if(Math.random()<=mutProb) {
+				indiv1=mutate(indiv1);
+			}
+			if(Math.random()<=mutProb &&newPop.size()<popSize-1) {
+				indiv2=mutate(indiv2);
+			}
+			newPop.add(indiv1);
+			if(newPop.size()<popSize) {
+				newPop.add(indiv2);
+			}
 		}
 		return newPop;
+	}
+
+	private ArrayList<Integer> mutate(ArrayList<Integer> indiv) {
+		int loc1 =(int) Math.floor(Math.random() * prob.getDimension());
+		int loc2 =(int) Math.floor(Math.random() * prob.getDimension());
+		while (loc1==loc2) {
+			loc2 =(int) Math.floor(Math.random() * prob.getDimension());
+		}
+		Integer temp = indiv.get(loc1);
+		indiv.set(loc1, indiv.get(loc2));
+		indiv.set(loc2, temp);
+		
+		return indiv;
+	}
+
+	private ArrayList<Integer> getParent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/** Crossing operator PMX */
