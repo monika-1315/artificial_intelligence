@@ -1,4 +1,6 @@
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GeneticAlgorithm extends Algorithm {
@@ -11,6 +13,9 @@ public class GeneticAlgorithm extends Algorithm {
 	private ArrayList<Double> popEvals;
 	private ArrayList<Integer> currentBest = new ArrayList<Integer>(prob.getDimension());
 	private double currentBestEval = Double.MAX_VALUE;
+	private double popSum;
+	private double popBest;
+	private double popWorst;
 
 	public GeneticAlgorithm(Problem prob, int populationSize, double crossProb, double mutProb, int genNum) {
 		super(prob);
@@ -42,12 +47,20 @@ public class GeneticAlgorithm extends Algorithm {
 	}
 
 	private void evaluatePop() {
+		popSum=0;
 		for (int i = 0; i < popSize; i++) {//evaluate every individual from population
 			double eval=prob.evalInd(population.get(i));
 			popEvals.add(eval);
+			popSum+=eval;///needed only with roulette
 			if (eval<currentBestEval) {
 				currentBestEval=eval;
 				currentBest=population.get(i);
+			}
+			if (eval<popBest) {
+				popBest=eval;
+			}
+			if (eval>popWorst) {
+				popWorst=eval;
 			}
 		}
 	}
@@ -90,7 +103,9 @@ public class GeneticAlgorithm extends Algorithm {
 	}
 
 	private ArrayList<Integer> getParent() {
-		return tournament(5);
+		//return tournament(5);
+		
+		return roulette();
 	}
 	
 	private ArrayList<Integer> tournament(int n){
@@ -108,6 +123,18 @@ public class GeneticAlgorithm extends Algorithm {
 			}
 		}
 		return population.get(bestInd);
+	}
+	
+	private ArrayList<Integer> roulette(){
+		double sum = popSum+popSize*(popWorst+1);
+		double random = Math.random()*sum;
+		for (int i=0; i<popSize; i++) {
+			random-=(popWorst-popEvals.get(i)+1);
+			if(random<=0) {
+				return population.get(i);
+			}
+		}
+		return population.get(popSize-1);
 	}
 
 	/** Crossing operator PMX */

@@ -16,12 +16,12 @@ public class App {
 //		 load= new Loader("TSP/pr2392.tsp");
 		Problem p = load.load();
 		System.out.println(p.toString());
-		GeneticAlgorithm galg= new GeneticAlgorithm(p, 1000, 0.5, 0.1,1000);
+		GeneticAlgorithm galg= new GeneticAlgorithm(p, 1000, 0.5, 0.1,100);
 		galg.run();
 		Algorithm alg = new RandomAlgorithm(p, 10000);
 		alg.run();
-		alg = new GreedyAlgorithm(p, 7);
-		alg.run();
+//		alg = new GreedyAlgorithm(p, 7);
+//		alg.run();
 		
 	}
 }
