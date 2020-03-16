@@ -1,8 +1,10 @@
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public abstract class Algorithm {
 	protected Problem prob;
+	protected BufferedWriter writer;
 
 	public Algorithm(Problem prob) {
 		super();

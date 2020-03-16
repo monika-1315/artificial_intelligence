@@ -1,7 +1,8 @@
-import java.math.BigInteger;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GeneticAlgorithm extends Algorithm {
@@ -27,19 +28,39 @@ public class GeneticAlgorithm extends Algorithm {
 		popSize = populationSize;
 		population = new ArrayList<ArrayList<Integer>>(popSize);
 		popEvals = new ArrayList<Double>(popSize);
+		try {
+			writer = new BufferedWriter(new FileWriter("GeneticAlg.csv", true));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void run() {
 		makeInitPop();// make the first population
+		try {
+			writer.append("\n1,");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		evaluatePop();
 		if (genNum > 1) {// iterate through next generations
 			for (int p = 1; p < genNum; p++) {
+				try {
+					writer.append(p+1+",");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 				population = makeNewPopulation();
 				evaluatePop();
 			}
 		}
 		System.out.println("GA: best eval: " + currentBestEval + " individual: " + currentBest);
+		try {
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**Test method only to show and print to check whether all the operators work as they should*/
@@ -86,7 +107,7 @@ public class GeneticAlgorithm extends Algorithm {
 	}
 
 	private void makeInitPop() {
-		// population.add(greedyInd(((int) Math.floor(Math.random() *prob.getDimension()))));
+		
 		for (int i = 0; i < popSize; i++) {
 			population.add(this.randomInd());
 		}
@@ -94,10 +115,13 @@ public class GeneticAlgorithm extends Algorithm {
 
 	private void evaluatePop() {
 		popSum = 0;
+		popEvals = new ArrayList<Double>(popSize);
+		popWorst=0;
+		popBest=Double.MAX_VALUE;
 		for (int i = 0; i < popSize; i++) {// evaluate every individual from population
 			double eval = prob.evalInd(population.get(i));
 			popEvals.add(eval);
-			popSum += eval;/// needed only with roulette
+			popSum += eval;
 			if (eval < currentBestEval) {
 				currentBestEval = eval;
 				currentBest = population.get(i);
@@ -108,6 +132,11 @@ public class GeneticAlgorithm extends Algorithm {
 			if (eval > popWorst) {
 				popWorst = eval;
 			}
+		}//for
+		try {
+			writer.append(" "+popBest + ", "+ popSum/popSize + ", "+popWorst+"\n");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
