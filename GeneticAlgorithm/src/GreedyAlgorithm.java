@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GreedyAlgorithm extends Algorithm {
@@ -7,6 +10,11 @@ public class GreedyAlgorithm extends Algorithm {
 	public GreedyAlgorithm(Problem prob, int startCity) {
 		super(prob);
 		this.startCity = startCity;
+		try {
+			writer = new BufferedWriter(new FileWriter("GreedyAlg.csv", true));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void run() {
@@ -16,5 +24,11 @@ public class GreedyAlgorithm extends Algorithm {
 		double currEval = prob.evalInd(currInd);
 		
 		System.out.println("Greedy: eval: " + currEval + " indiv: " + currInd);
+		try {
+			writer.append(startCity+", "+currEval+"\n");
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

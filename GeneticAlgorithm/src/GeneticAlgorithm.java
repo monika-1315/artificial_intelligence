@@ -39,7 +39,7 @@ public class GeneticAlgorithm extends Algorithm {
 	public void run() {
 		makeInitPop();// make the first population
 		try {
-			writer.append("\n1,");
+			writer.append("\nTour5 PopSize: "+popSize+", genNum: "+genNum+", crossProb: "+crossProb+", mutProb: "+mutProb+"\n1,");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -182,9 +182,9 @@ public class GeneticAlgorithm extends Algorithm {
 	}
 
 	private ArrayList<Integer> getParent() {
-		// return tournament(5);
+		 return tournament(5);
 
-		return roulette();
+		//return roulette();
 	}
 
 	private ArrayList<Integer> tournament(int n) {
