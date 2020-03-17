@@ -19,7 +19,7 @@ public class App {
 		Problem p2 = load2.load();
 		Problem p3 = load3.load();
 //		System.out.println(p.toString());
-		BufferedWriter writer = new BufferedWriter(new FileWriter("GeneticAlg.csv", true));
+		BufferedWriter writer = new BufferedWriter(new FileWriter("GeneticAlg.csv"));
 
 		GeneticAlgorithm galg1 = new GeneticAlgorithm(p1, 60, 0.7, 0.1, 100);
 		GeneticAlgorithm galg2 = new GeneticAlgorithm(p2, 60, 0.7, 0.1, 100);

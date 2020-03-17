@@ -13,8 +13,8 @@ public class GeneticAlgorithm extends Algorithm {
 	private int genNum;
 	private ArrayList<ArrayList<Integer>> population;
 	private ArrayList<Double> popEvals;
-	private ArrayList<Integer> currentBest = new ArrayList<Integer>(prob.getDimension());
-	private double currentBestEval = Double.MAX_VALUE;
+	private ArrayList<Integer> currentBest;
+	private double currentBestEval;
 	private double popSum;
 	private double popBest;
 	private double popWorst;
@@ -26,8 +26,7 @@ public class GeneticAlgorithm extends Algorithm {
 		this.mutProb = mutProb;
 		this.genNum = genNum;
 		popSize = populationSize;
-		population = new ArrayList<ArrayList<Integer>>(popSize);
-		popEvals = new ArrayList<Double>(popSize);
+		
 		try {
 			writer = new BufferedWriter(new FileWriter("GeneticAlg"+prob.getName()+".csv", true));
 		} catch (IOException e) {
@@ -37,6 +36,11 @@ public class GeneticAlgorithm extends Algorithm {
 
 	@Override
 	public double run() {
+		currentBest = new ArrayList<Integer>(prob.getDimension());
+		currentBestEval = Double.MAX_VALUE;
+		population = new ArrayList<ArrayList<Integer>>(popSize);
+		popEvals = new ArrayList<Double>(popSize);
+		
 		makeInitPop();// make the first population
 		try {
 			writer.append("\nTour5 PopSize: "+popSize+", genNum: "+genNum+", crossProb: "+crossProb+", mutProb: "+mutProb+"\n1,");
