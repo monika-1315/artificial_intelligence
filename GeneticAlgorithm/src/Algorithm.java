@@ -11,7 +11,7 @@ public abstract class Algorithm {
 		this.prob = prob;
 	}
 
-	public abstract void run();
+	public abstract double run();
 	
 	protected ArrayList<Integer> randomInd() {
 		ArrayList<Integer> indiv = new ArrayList<Integer>(prob.getDimension());

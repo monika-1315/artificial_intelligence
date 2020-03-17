@@ -17,7 +17,7 @@ public class GreedyAlgorithm extends Algorithm {
 		}
 	}
 
-	public void run() {
+	public double run() {
 		ArrayList<Integer> currInd = new ArrayList<Integer>(prob.getDimension());
 		
 		currInd =greedyInd(startCity);
@@ -30,5 +30,6 @@ public class GreedyAlgorithm extends Algorithm {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return currEval;
 	}
 }

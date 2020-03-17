@@ -29,14 +29,14 @@ public class GeneticAlgorithm extends Algorithm {
 		population = new ArrayList<ArrayList<Integer>>(popSize);
 		popEvals = new ArrayList<Double>(popSize);
 		try {
-			writer = new BufferedWriter(new FileWriter("GeneticAlg.csv", true));
+			writer = new BufferedWriter(new FileWriter("GeneticAlg"+prob.getName()+".csv", true));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void run() {
+	public double run() {
 		makeInitPop();// make the first population
 		try {
 			writer.append("\nTour5 PopSize: "+popSize+", genNum: "+genNum+", crossProb: "+crossProb+", mutProb: "+mutProb+"\n1,");
@@ -56,11 +56,12 @@ public class GeneticAlgorithm extends Algorithm {
 			}
 		}
 		System.out.println("GA: best eval: " + currentBestEval + " individual: " + currentBest);
-		try {
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			writer.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		return currentBestEval;
 	}
 
 	/**Test method only to show and print to check whether all the operators work as they should*/

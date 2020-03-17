@@ -16,7 +16,7 @@ public class RandomAlgorithm extends Algorithm {
 		}
 	}
 
-	public void run() {
+	public double run() {
 		ArrayList<Integer> bestInd = new ArrayList<Integer>(prob.getDimension());
 		double bestEval = Integer.MAX_VALUE;
 		ArrayList<Integer> currInd;
@@ -40,5 +40,6 @@ public class RandomAlgorithm extends Algorithm {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return bestEval;
 	}
 }
