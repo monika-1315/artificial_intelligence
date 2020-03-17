@@ -21,18 +21,36 @@ public class App {
 //		System.out.println(p.toString());
 		BufferedWriter writer = new BufferedWriter(new FileWriter("GeneticAlg.csv"));
 
-		GeneticAlgorithm galg1 = new GeneticAlgorithm(p1, 60, 0.7, 0.1, 100);
-		GeneticAlgorithm galg2 = new GeneticAlgorithm(p2, 60, 0.7, 0.1, 100);
-		GeneticAlgorithm galg3 = new GeneticAlgorithm(p3, 60, 0.7, 0.1, 100);
-
+		int popSize = 800;
+		double crossProb = 0.7;
+		double mutProb = 0.1;
+		int genNum=1000;
+		GeneticAlgorithm galg1 = new GeneticAlgorithm(p1, popSize, crossProb, mutProb, genNum);
+		GeneticAlgorithm galg2 = new GeneticAlgorithm(p2, popSize, crossProb, mutProb, genNum);
+		GeneticAlgorithm galg3 = new GeneticAlgorithm(p3, popSize, crossProb, mutProb, genNum);
+		double b1 = 0;
+		double b2 = 0;
+		double b3 = 0;
+		double s1 = 0;
+		double s2 = 0;
+		double s3 = 0;
 		for (int i = 0; i < 10; i++) {
-			writer.append(galg1.run() + ", ");
-			writer.append(galg2.run() + ", ");
-			writer.append(galg3.run() + "\n");
+			b1 = galg1.run();
+			s1 += b1;
+			writer.append(b1 + ", ");
+			b2 = galg2.run();
+			s2 += b2;
+			writer.append(b2 + ", ");
+			b3 = galg3.run();
+			s3 += b3;
+			writer.append(b3 + ", ");
 		}
 		writer.close();
 
-//		Algorithm alg = new RandomAlgorithm(p, 10000);
+		System.out.println(s1 / 10);
+		System.out.println(s2 / 10);
+		System.out.println(s3 / 10);
+//		Algorithm alg = new RandomAlgorithm(p1, 10000);
 //		alg.run();
 //		alg = new GreedyAlgorithm(p, 7);
 //		alg.run();

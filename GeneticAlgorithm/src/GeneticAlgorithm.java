@@ -59,7 +59,7 @@ public class GeneticAlgorithm extends Algorithm {
 				evaluatePop();
 			}
 		}
-		System.out.println("GA: best eval: " + currentBestEval + " individual: " + currentBest);
+		System.out.println("GA: best eval: " + currentBestEval);// + " individual: " + currentBest);
 //		try {
 //			writer.close();
 //		} catch (IOException e) {
@@ -189,7 +189,7 @@ public class GeneticAlgorithm extends Algorithm {
 	private ArrayList<Integer> getParent() {
 		 return tournament(5);
 
-		//return roulette();
+//		return roulette();
 	}
 
 	private ArrayList<Integer> tournament(int n) {
