@@ -28,6 +28,7 @@ public class GeneticAlgorithm extends Algorithm {
 		this.mutProb = mutProb;
 		this.genNum = genNum;
 		popSize = populationSize;
+//		popSize=prob.getDimension();//needed when makingGreedyPopulation
 		
 		try {
 			writer = new BufferedWriter(new FileWriter("GeneticAlg"+prob.getName()+".csv", true));
@@ -43,7 +44,8 @@ public class GeneticAlgorithm extends Algorithm {
 		population = new ArrayList<ArrayList<Integer>>(popSize);
 		popEvals = new ArrayList<Double>(popSize);
 		
-		makeInitPop();// make the first population
+		//makeGreedyPop();// make the first population
+		makeInitPop();
 		try {
 			writer.append("\nTour5 PopSize: "+popSize+", genNum: "+genNum+", crossProb: "+crossProb+", mutProb: "+mutProb+"\n1,");
 		} catch (IOException e1) {
@@ -68,6 +70,13 @@ public class GeneticAlgorithm extends Algorithm {
 //			e.printStackTrace();
 //		}
 		return currentBestEval;
+	}
+
+	private void makeGreedyPop() {
+		for (int start=0; start<popSize; start++) {
+			population.add(this.greedyInd(start));
+		}
+		
 	}
 
 	/**Test method only to show and print to check whether all the operators work as they should*/
@@ -189,9 +198,9 @@ public class GeneticAlgorithm extends Algorithm {
 	}
 
 	private ArrayList<Integer> getParent() {
-		 return tournament(tour);
+//		 return tournament(tour);
 
-//		return roulette();
+		return roulette();
 	}
 
 	private ArrayList<Integer> tournament(int n) {

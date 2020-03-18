@@ -37,8 +37,9 @@ public class App {
 		double s2 = 0;
 		double s3 = 0;
 		double s4 = 0;
-		for (int i = 0; i < 10; i++) {
-			b0 = galg0.run();
+		int iters=10;
+		for (int i = 0; i < iters; i++) {
+			b0 = galg0.run(); 
 			s0 += b0;
 			writer.append(b0 + ", ");
 			b1 = galg1.run();
@@ -56,20 +57,20 @@ public class App {
 		}
 		writer.close();
 
-		System.out.println(s0 / 10);
-		System.out.println(s1 / 10);
-		System.out.println(s2 / 10);
-		System.out.println(s3 / 10);
-		System.out.println(s4 / 10);
-		new RandomAlgorithm(p0, 640000).run();
-		new GreedyAlgorithm(p0).run();
-		new RandomAlgorithm(p1, 640000).run();
-		new GreedyAlgorithm(p1).run();
-		new RandomAlgorithm(p2, 640000).run();
-		new GreedyAlgorithm(p2).run();
-		new RandomAlgorithm(p3, 640000).run();
-		new GreedyAlgorithm(p3).run();
-		new RandomAlgorithm(p4, 640000).run();
-		new GreedyAlgorithm(p4).run();
+		System.out.println(s0 / iters);
+		System.out.println(s1 / iters);
+		System.out.println(s2 / iters);
+		System.out.println(s3 / iters);
+		System.out.println(s4 / iters);
+//		new RandomAlgorithm(p0, 640000).run();
+//		new GreedyAlgorithm(p0).run();
+//		new RandomAlgorithm(p1, 640000).run();
+//		new GreedyAlgorithm(p1).run();
+//		new RandomAlgorithm(p2, 640000).run();
+//		new GreedyAlgorithm(p2).run();
+//		new RandomAlgorithm(p3, 640000).run();
+//		new GreedyAlgorithm(p3).run();
+//		new RandomAlgorithm(p4, 640000).run();
+//		new GreedyAlgorithm(p4).run();
 	}
 }
