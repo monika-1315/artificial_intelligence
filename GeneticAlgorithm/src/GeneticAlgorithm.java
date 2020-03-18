@@ -19,6 +19,8 @@ public class GeneticAlgorithm extends Algorithm {
 	private double popBest;
 	private double popWorst;
 	private boolean debug=false;
+	private static int tour=5;
+	private static double epsilon=0.00000001;
 
 	public GeneticAlgorithm(Problem prob, int populationSize, double crossProb, double mutProb, int genNum) {
 		super(prob);
@@ -187,7 +189,7 @@ public class GeneticAlgorithm extends Algorithm {
 	}
 
 	private ArrayList<Integer> getParent() {
-		 return tournament(5);
+		 return tournament(tour);
 
 //		return roulette();
 	}
@@ -210,11 +212,11 @@ public class GeneticAlgorithm extends Algorithm {
 	}
 
 	private ArrayList<Integer> roulette() {
-		double sum = -popSum + popSize * (popWorst + 1);
+		double sum = -popSum + popSize * (popWorst + epsilon);
 		double random = Math.random() * sum;
 		if(debug) System.out.print("Roulette: random = "+random);
 		for (int i = 0; i < popSize; i++) {
-			double indivPart=(popWorst - popEvals.get(i) + 1);
+			double indivPart=(popWorst - popEvals.get(i) + epsilon);
 			random -= indivPart;
 			if(debug) System.out.print(" Individual "+i+" has "+indivPart);
 			if (random <= 0) {

@@ -10,7 +10,7 @@ public class RandomAlgorithm extends Algorithm {
 		super(prob);
 		this.cnt=cnt;
 		try {
-			writer = new BufferedWriter(new FileWriter("RandomAlg.csv"));
+			writer = new BufferedWriter(new FileWriter("RandomAlg"+prob.getName()+".csv"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
