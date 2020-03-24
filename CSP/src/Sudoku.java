@@ -115,10 +115,7 @@ public class Sudoku extends CSP {
 	}
 
 	private void backtracking(int lvl, char[][] vals) {
-//		if (!checkRestrictions(vals)) {
-//			returns++;
-//			return;
-//		}
+
 		if (lvl == variables.size()) {
 			if (checkRestrictions(vals)) {
 				if (solutions.size() == 0) {
@@ -126,18 +123,11 @@ public class Sudoku extends CSP {
 							+ nodes + " nodes visited, " + returns + " returns");
 
 				}
-				solutions.add(vals);
-				for (char[][] sol : solutions) {
-					for (int r = 0; r < SUDOKU_SIZE; r++) {
-						System.out.println(sol[r]);
-					}
-					System.out.println();
-				}
-				return;
+				solutions.add(vals);;
 			} else {
 				returns++;
-				return;
 			}
+			return;
 		}
 
 		int var = variables.get(lvl);
@@ -167,7 +157,7 @@ public class Sudoku extends CSP {
 	private ArrayList<Integer> emptyVars() {// heuristic of selecting variables
 		ArrayList<Integer> vars = new ArrayList<Integer>();
 		for (int row = 0; row < SUDOKU_SIZE; row++) {
-			System.out.println(initV[row]);
+//			System.out.println(initV[row]);
 			for (int col = 0; col < SUDOKU_SIZE; col++) {
 				if (initV[row][col] == '.')
 					vars.add(row * 10 + col);
