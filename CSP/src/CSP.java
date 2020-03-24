@@ -6,5 +6,5 @@ public abstract class CSP {
 
 	protected LinkedList<Character>[][] D;
 	protected abstract boolean checkRestrictions(char[][] V);
-	public abstract ArrayList<char[][]> solve();
+	public abstract LinkedList<char[][]> solve();
 }
