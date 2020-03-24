@@ -28,9 +28,11 @@ public class Sudoku extends CSP {
 		for (int row = 0; row < 9; row++) {
 			set = new HashSet<Character>();
 			for (char i : V[row]) {
-				if (set.contains(i))
-					return false;
-				set.add(i);
+				if (i != ' ') {
+					if (set.contains(i))
+						return false;
+					set.add(i);
+				}
 			}
 		}
 
@@ -38,9 +40,11 @@ public class Sudoku extends CSP {
 		for (int col = 0; col < 9; col++) {
 			set = new HashSet<Character>();
 			for (int row = 0; row < 0; row++) {
-				if (set.contains(V[row][col]))
-					return false;
-				set.add(V[row][col]);
+				if (V[row][col] != ' ') {
+					if (set.contains(V[row][col]))
+						return false;
+					set.add(V[row][col]);
+				}
 			}
 		}
 		// check repetitions in small squares
@@ -58,9 +62,11 @@ public class Sudoku extends CSP {
 		Set<Character> set = new HashSet<Character>();
 		for (int row = startRow; row < startRow + 3; row++) {
 			for (int col = startCol; col < startCol + 3; col++) {
-				if (set.contains(V[row][col]))
-					return false;
-				set.add(V[row][col]);
+				if (V[row][col] != ' ') {
+					if (set.contains(V[row][col]))
+						return false;
+					set.add(V[row][col]);
+				}
 			}
 		}
 		return true;
