@@ -32,6 +32,7 @@ public class GeneticAlgorithm extends Algorithm {
 		
 		try {
 			writer = new BufferedWriter(new FileWriter("GeneticAlg"+prob.getName()+".csv", true));
+			//to see how it works in each generation
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

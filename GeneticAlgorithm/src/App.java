@@ -15,7 +15,6 @@ public class App {
 		Problem p2 = load2.load();
 		Problem p3 = load3.load();
 		Problem p4 = load4.load();
-//		System.out.println(p.toString());
 		BufferedWriter writer = new BufferedWriter(new FileWriter("GeneticAlg.csv"));
 
 		int popSize = 800; 
@@ -27,6 +26,7 @@ public class App {
 		GeneticAlgorithm galg2 = new GeneticAlgorithm(p2, popSize, crossProb, mutProb, genNum);
 		GeneticAlgorithm galg3 = new GeneticAlgorithm(p3, popSize, crossProb, mutProb, genNum);
 		GeneticAlgorithm galg4 = new GeneticAlgorithm(p4, popSize, crossProb, mutProb, genNum);
+		
 		double b0 = 0;
 		double b1 = 0;
 		double b2 = 0;
@@ -37,6 +37,7 @@ public class App {
 		double s2 = 0;
 		double s3 = 0;
 		double s4 = 0;
+		//running AG 10 times
 		int iters=10;
 		for (int i = 0; i < iters; i++) {
 			b0 = galg0.run(); 
@@ -57,20 +58,23 @@ public class App {
 		}
 		writer.close();
 
+		//showing avg
 		System.out.println(s0 / iters);
 		System.out.println(s1 / iters);
 		System.out.println(s2 / iters);
 		System.out.println(s3 / iters);
 		System.out.println(s4 / iters);
-//		new RandomAlgorithm(p0, 640000).run();
-//		new GreedyAlgorithm(p0).run();
-//		new RandomAlgorithm(p1, 640000).run();
-//		new GreedyAlgorithm(p1).run();
-//		new RandomAlgorithm(p2, 640000).run();
-//		new GreedyAlgorithm(p2).run();
-//		new RandomAlgorithm(p3, 640000).run();
-//		new GreedyAlgorithm(p3).run();
-//		new RandomAlgorithm(p4, 640000).run();
-//		new GreedyAlgorithm(p4).run();
+		
+		//checking random and greedy
+		new RandomAlgorithm(p0, 640000).run();
+		new GreedyAlgorithm(p0).run();
+		new RandomAlgorithm(p1, 640000).run();
+		new GreedyAlgorithm(p1).run();
+		new RandomAlgorithm(p2, 640000).run();
+		new GreedyAlgorithm(p2).run();
+		new RandomAlgorithm(p3, 640000).run();
+		new GreedyAlgorithm(p3).run();
+		new RandomAlgorithm(p4, 640000).run();
+		new GreedyAlgorithm(p4).run();
 	}
 }

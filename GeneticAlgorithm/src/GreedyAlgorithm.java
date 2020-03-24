@@ -26,7 +26,6 @@ public class GreedyAlgorithm extends Algorithm {
 			try {
 				writer.append(startCity + ", " + currEval + "\n");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -34,7 +33,6 @@ public class GreedyAlgorithm extends Algorithm {
 		try {
 			writer.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return currEval;
