@@ -24,7 +24,7 @@ public class Loader {
 		String line=scan.nextLine();
 		String[] words=line.split(";");
 		System.out.println("Sudoku nr "+words[0]+" difficulty level: "+words[1]);
-		System.out.println(words[2]);
+//		System.out.println(words[2]);
 		return new Sudoku(words[2].toCharArray());
 		
 	}

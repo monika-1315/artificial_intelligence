@@ -1,10 +1,10 @@
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedList;
 
 public abstract class CSP {
 
 
-	protected HashSet[][] D;
+	protected LinkedList<Character>[][] D;
 	protected abstract boolean checkRestrictions(char[][] V);
 	public abstract ArrayList<char[][]> solve();
 }
