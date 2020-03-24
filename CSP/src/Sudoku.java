@@ -121,15 +121,8 @@ public class Sudoku extends CSP {
 				if(solutions.size()==0) {
 					System.out.println("First solution. Time: "+(java.lang.System.currentTimeMillis()-t0)+" ms. "
 							+nodes+" nodes visited, "+returns+" returns");
-					
 				}
 				solutions.add(vals);
-				for (char[][]sol: solutions) {
-					for(int r=0; r<SUDOKU_SIZE; r++) {
-						System.out.println(sol[r]);
-					}
-					System.out.println();
-				}
 				return;
 			} else {
 				returns++;
@@ -140,15 +133,11 @@ public class Sudoku extends CSP {
 		int var = variables.get(lvl);
 		int row = Math.floorDiv(var, 10);
 		int col = var % 10;
-		char[][] sol= new char[SUDOKU_SIZE][SUDOKU_SIZE];
+		char[][] sol;
 		
 		for (char v : nextVals(row, col)) {
 			nodes++;
-			sol= new char[SUDOKU_SIZE][SUDOKU_SIZE];
-			for(int chrow=0; chrow<SUDOKU_SIZE; chrow++) {
-				sol[chrow] = vals[chrow].clone();
-			}
-			
+			sol = vals.clone();
 			sol[row][col] = v;
 			if(checkRestrictions(sol))
 				backtracking(lvl + 1, sol);
