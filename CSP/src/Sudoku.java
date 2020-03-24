@@ -33,7 +33,7 @@ public class Sudoku extends CSP {
 				ch_i++;
 			} // cols
 		} // rows
-		
+
 	}
 
 	@Override
@@ -44,29 +44,30 @@ public class Sudoku extends CSP {
 		for (int row = 0; row < SUDOKU_SIZE; row++) {
 			set = new HashSet<Character>();
 			for (char i : V[row]) {
-				 if (i != '.') {
-				if (set.contains(i))
-					return false;
-				set.add(i);
-				 }
+				if (i != '.') {
+					if (set.contains(i))
+						return false;
+					set.add(i);
+				}
 			}
 		}
 
 		// check repetitions in cols
 		for (int col = 0; col < SUDOKU_SIZE; col++) {
 			set = new HashSet<Character>();
-			for (int row = 0; row < 0; row++) {
-				 if (V[row][col] != '.') {
-				if (set.contains(V[row][col]))
-					return false;
-				set.add(V[row][col]);
-				 }
+			for (int row = 0; row < SUDOKU_SIZE; row++) {
+				if (V[row][col] != '.') {
+					if (set.contains(V[row][col]))
+						return false;
+					set.add(V[row][col]);
+//					System.out.println(set);
+				}
 			}
 		}
 		// check repetitions in small squares
 		for (int row = 0; row < SUDOKU_SIZE; row += 3) {
 			for (int col = 0; col < SUDOKU_SIZE; col += 3) {
-				if (!checkSmallSquare(V, 0, 0))
+				if (!checkSmallSquare(V, row, col))
 					return false;
 			}
 		}
@@ -77,11 +78,12 @@ public class Sudoku extends CSP {
 		Set<Character> set = new HashSet<Character>();
 		for (int row = startRow; row < startRow + 3; row++) {
 			for (int col = startCol; col < startCol + 3; col++) {
-				 if (V[row][col] != '.') {
-				if (set.contains(V[row][col]))
-					return false;
-				set.add(V[row][col]);
-				 }
+				if (V[row][col] != '.') {
+					if (set.contains(V[row][col]))
+						return false;
+					set.add(V[row][col]);
+//					System.out.println(row+" "+col);
+				}
 			}
 		}
 		return true;
@@ -101,9 +103,10 @@ public class Sudoku extends CSP {
 
 		backtracking(0, initV);
 
-		System.out.println((java.lang.System.currentTimeMillis()-t0)+" ms. Found "+solutions.size()+" solutions "+nodes+" nodes visited "+returns+" returns");
-		for (char[][]sol: solutions) {
-			for(int r=0; r<SUDOKU_SIZE; r++) {
+		System.out.println((java.lang.System.currentTimeMillis() - t0) + " ms. Found " + solutions.size()
+				+ " solutions " + nodes + " nodes visited " + returns + " returns");
+		for (char[][] sol : solutions) {
+			for (int r = 0; r < SUDOKU_SIZE; r++) {
 				System.out.println(sol[r]);
 			}
 			System.out.println();
@@ -118,28 +121,39 @@ public class Sudoku extends CSP {
 //		}
 		if (lvl == variables.size()) {
 			if (checkRestrictions(vals)) {
-				if(solutions.size()==0) {
-					System.out.println("First solution. Time: "+(java.lang.System.currentTimeMillis()-t0)+" ms. "
-							+nodes+" nodes visited, "+returns+" returns");
+				if (solutions.size() == 0) {
+					System.out.println("First solution. Time: " + (java.lang.System.currentTimeMillis() - t0) + " ms. "
+							+ nodes + " nodes visited, " + returns + " returns");
+
 				}
 				solutions.add(vals);
+				for (char[][] sol : solutions) {
+					for (int r = 0; r < SUDOKU_SIZE; r++) {
+						System.out.println(sol[r]);
+					}
+					System.out.println();
+				}
 				return;
 			} else {
 				returns++;
 				return;
 			}
 		}
-		
+
 		int var = variables.get(lvl);
 		int row = Math.floorDiv(var, 10);
 		int col = var % 10;
-		char[][] sol;
-		
+		char[][] sol = new char[SUDOKU_SIZE][SUDOKU_SIZE];
+
 		for (char v : nextVals(row, col)) {
 			nodes++;
-			sol = vals.clone();
+			sol = new char[SUDOKU_SIZE][SUDOKU_SIZE];
+			for (int chrow = 0; chrow < SUDOKU_SIZE; chrow++) {
+				sol[chrow] = vals[chrow].clone();
+			}
+
 			sol[row][col] = v;
-			if(checkRestrictions(sol))
+			if (checkRestrictions(sol))
 				backtracking(lvl + 1, sol);
 		}
 		returns++;
@@ -155,7 +169,7 @@ public class Sudoku extends CSP {
 		for (int row = 0; row < SUDOKU_SIZE; row++) {
 			System.out.println(initV[row]);
 			for (int col = 0; col < SUDOKU_SIZE; col++) {
-				if (initV[row][col]== '.')
+				if (initV[row][col] == '.')
 					vars.add(row * 10 + col);
 			}
 		}
