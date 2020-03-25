@@ -14,9 +14,10 @@ public class Gap {
 	}
 	
 	public String getValue(char[][] puzzle) {
+//		System.out.println(this.toString());
 		char[] value= new char[length];
 		for(int i =0; i<length; i++) {
-			if(isHorizontal)
+			if(!isHorizontal)
 				value[i]=puzzle[row0+i][col0];
 			else
 				value[i]=puzzle[row0][col0+i];

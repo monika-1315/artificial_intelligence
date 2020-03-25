@@ -41,18 +41,22 @@ public abstract class CSP<T> {
 	}
 
 	protected void backtracking(int lvl, char[][] vals) {
-
+//		for (char[] sol : vals) {
+//			System.out.println(sol);
+//		}
 		if (lvl == nextVars.size()) {
+			
 			if (checkRestrictions(vals)) {
+				
 				if (solutions.size() == 0) {
 					System.out.println("First solution. Time: " + (java.lang.System.currentTimeMillis() - t0) + " ms. "
 							+ nodes + " nodes visited, " + returns + " returns");
 
 				}
-				solutions.add(vals);;
+				solutions.add(vals);
 			} else {
 				returns++;
-			}
+			} 
 			return;
 		}
 
@@ -63,6 +67,7 @@ public abstract class CSP<T> {
 
 		for (T v : nextVals(row, col)) {
 			nodes++;
+//			System.out.println(v);
 			sol = new char[vals.length][vals[0].length];
 			for (int chrow = 0; chrow < sol.length; chrow++) {
 				sol[chrow] = vals[chrow].clone();
@@ -74,7 +79,7 @@ public abstract class CSP<T> {
 
 	}
 	
-	protected abstract void insert(char[][] sol, int row, int col, T v, int lvl);
+	protected abstract void insert(char[][] sol, int fieldRow, int fieldCol, T v, int lvl);
 	
 	protected LinkedList<T> nextVals(int row, int col) {
 		return nextValFromD(row, col);

@@ -14,8 +14,8 @@ public class Jolka extends CSP<String> {
 		fields = new ArrayList[2];
 		lookForFields(true);
 		lookForFields(false);
-		System.out.println(fields[0]);
-		System.out.println(fields[1]);
+//		System.out.println(fields[0]);
+//		System.out.println(fields[1]);
 		checkDomains();
 	}
 
@@ -31,7 +31,7 @@ public class Jolka extends CSP<String> {
 						D[ix][iy].add(word);
 					}
 				}
-				System.out.println(ix+" "+iy+D[ix][iy]);
+//				System.out.println(ix+" "+iy+D[ix][iy]);
 			}
 		}//both hor and ver
 				
@@ -50,17 +50,25 @@ public class Jolka extends CSP<String> {
 			x2Max=initV.length;
 			fields[0]=new ArrayList<Gap>();
 		}
+		
 		for (int x1 = 0; x1 < x1Max; x1++) {
 			for (int x2 = 0; x2 < x2Max; x2++) {
 				char val;
-				if(isHorizontal)
-					val = initV[x1][x2];
-				else
-					val = initV[x2][x1];
+				int row=x1;
+				int col=x2;
+				if(isHorizontal) {
+					row=x1;
+					col=x2;
+				}
+				else {
+					row=x2;
+					col=x1;
+				}
+				val = initV[row][col];
 				if (val != '#') {
 					if (length ==0) {
-						row0 = x1;
-						col0 = x2;
+						row0 = row;
+						col0 = col;
 					}
 					length++;
 				} else {
@@ -87,6 +95,10 @@ public class Jolka extends CSP<String> {
 	protected boolean checkRestrictions(char[][] V) {
 		Set<String> foundWords=new HashSet<String>();
 		String word="";
+		for(char[] d:V) {
+			System.out.println(d);
+		}
+
 		for (Integer var: nextVars) {
 			word=fields[Math.floorDiv(var, 10)].get(var%10).getValue(V);
 //			if (!words.contains(word))
@@ -110,8 +122,38 @@ public class Jolka extends CSP<String> {
 
 
 	@Override
-	protected void insert(char[][] sol, int row, int col, String v, int lvl) {
-		// TODO Auto-generated method stub
+	protected void insert(char[][] sol, int gapRow, int gapCol, String v, int lvl) {
+		char[] word=v.toCharArray();
+		Gap gap=fields[gapRow].get(gapCol);
+//		System.out.println(gap);
+		int row, col;
+		for(int i =0; i<word.length; i++) {
+			if(gap.isHorizontal) {
+				row=gap.row0;
+				col=gap.col0+i;
+			}
+			else {
+				row=gap.row0+i;
+				col=gap.col0;
+			}
+//			System.out.println(sol[row][col]);
+			if(sol[row][col]!='_'&& sol[row][col]!=word[i]) {
+				returns++;
+				return;
+			}
+		}
+		for(int i =0; i<word.length; i++) {
+			if(gap.isHorizontal) {
+				row=gap.row0;
+				col=gap.col0+i;
+			}
+			else {
+				row=gap.row0+i;
+				col=gap.col0;
+			}
+			sol[row][col]=word[i];
+		}
+		backtracking(lvl+1,sol);
 		
 	}
 

@@ -101,6 +101,7 @@ public class Sudoku extends CSP<Character> {
 		sol[row][col] = v;
 		if (checkRestrictions(sol))
 			backtracking(lvl + 1, sol);
+		else returns++;
 		
 	}
 
