@@ -26,6 +26,7 @@ public abstract class CSP<T> {
 		nodes = 0;
 		returns = 0;
 		nextVars = getVars();
+//		System.out.println(nextVars);
 
 		backtracking(0, initV);
 
@@ -61,11 +62,10 @@ public abstract class CSP<T> {
 		}
 
 		int var = nextVars.get(lvl);
-		int row = Math.floorDiv(var, 10);
-		int col = var % 10;
+		
 		char[][] sol;
 
-		for (T v : nextVals(row, col)) {
+		for (T v : nextVals(var)) {
 			nodes++;
 //			System.out.println(v);
 			sol = new char[vals.length][vals[0].length];
@@ -73,20 +73,17 @@ public abstract class CSP<T> {
 				sol[chrow] = vals[chrow].clone();
 			}
 
-			insert(sol, row, col, v, lvl);
+			insert(sol, var, v, lvl);
 		}
 		returns++;
 
 	}
 	
-	protected abstract void insert(char[][] sol, int fieldRow, int fieldCol, T v, int lvl);
+	protected abstract void insert(char[][] sol, int fieldVar, T v, int lvl);
 	
-	protected LinkedList<T> nextVals(int row, int col) {
-		return nextValFromD(row, col);
+	protected LinkedList<T> nextVals(int var) {
+		return nextValFromD(var);
 	}
 
-	protected LinkedList<T> nextValFromD(int row, int col) {
-
-		return D[row][col];
-	}
+	protected abstract LinkedList<T> nextValFromD(int var);
 }

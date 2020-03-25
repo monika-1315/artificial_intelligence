@@ -97,12 +97,20 @@ public class Sudoku extends CSP<Character> {
 	}
 
 	@Override
-	protected void insert(char[][] sol, int row, int col, Character v, int lvl) {
+	protected void insert(char[][] sol, int var, Character v, int lvl) {
+		int row = Math.floorDiv(var, 10);
+		int col = var % 10;
 		sol[row][col] = v;
 		if (checkRestrictions(sol))
 			backtracking(lvl + 1, sol);
 		else returns++;
 		
+	}
+	
+	protected LinkedList<Character> nextValFromD(int var){
+		int row = Math.floorDiv(var, 10);
+		int col = var % 10;
+		return D[row][col];
 	}
 
 	
