@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class Jolka extends CSP<String> {
 
@@ -83,26 +85,34 @@ public class Jolka extends CSP<String> {
 
 	@Override
 	protected boolean checkRestrictions(char[][] V) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public LinkedList<char[][]> solve() {
-		// TODO Auto-generated method stub
-		return null;
+		Set<String> foundWords=new HashSet<String>();
+		String word="";
+		for (Integer var: nextVars) {
+			word=fields[Math.floorDiv(var, 10)].get(var%10).getValue(V);
+//			if (!words.contains(word))
+//				return false;
+			if (foundWords.contains(word))
+				return false;
+			else foundWords.add(word);
+		}
+		return true;
 	}
 
 	@Override
 	protected ArrayList<Integer> emptyVars() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Integer> gaps=new ArrayList<Integer>();
+		for(int i=0; i<fields.length;i++) {
+			for(int j=0; j<fields[i].size();j++)
+				gaps.add(10*i+j);
+		}
+		return gaps;
 	}
 
-	@Override
-	protected void backtracking(int lvl, char[][] vals) {
-		// TODO Auto-generated method stub
 
+	@Override
+	protected void insert(char[][] sol, int row, int col, String v, int lvl) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

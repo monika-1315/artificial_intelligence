@@ -8,7 +8,6 @@ public class Sudoku extends CSP<Character> {
 
 	public static int SUDOKU_SIZE = 9;
 
-	private char[][] initV;
 
 	public Sudoku(char[] startVals) {
 		super();
@@ -83,49 +82,6 @@ public class Sudoku extends CSP<Character> {
 		return true;
 	}
 
-	@Override
-	public LinkedList<char[][]> solve() {
-		return backtracking();
-	}
-
-	
-	@Override
-	protected void backtracking(int lvl, char[][] vals) {
-
-		if (lvl == variables.size()) {
-			if (checkRestrictions(vals)) {
-				if (solutions.size() == 0) {
-					System.out.println("First solution. Time: " + (java.lang.System.currentTimeMillis() - t0) + " ms. "
-							+ nodes + " nodes visited, " + returns + " returns");
-
-				}
-				solutions.add(vals);;
-			} else {
-				returns++;
-			}
-			return;
-		}
-
-		int var = variables.get(lvl);
-		int row = Math.floorDiv(var, 10);
-		int col = var % 10;
-		char[][] sol = new char[SUDOKU_SIZE][SUDOKU_SIZE];
-
-		for (char v : nextVals(row, col)) {
-			nodes++;
-			sol = new char[SUDOKU_SIZE][SUDOKU_SIZE];
-			for (int chrow = 0; chrow < SUDOKU_SIZE; chrow++) {
-				sol[chrow] = vals[chrow].clone();
-			}
-
-			sol[row][col] = v;
-			if (checkRestrictions(sol))
-				backtracking(lvl + 1, sol);
-		}
-		returns++;
-
-	}
-
 	
 
 	protected ArrayList<Integer> emptyVars() {// heuristic of selecting variables
@@ -140,12 +96,13 @@ public class Sudoku extends CSP<Character> {
 		return vars;
 	}
 
-	private LinkedList<Character> nextVals(int row, int col) {
-		return nextValFromD(row, col);
+	@Override
+	protected void insert(char[][] sol, int row, int col, Character v, int lvl) {
+		sol[row][col] = v;
+		if (checkRestrictions(sol))
+			backtracking(lvl + 1, sol);
+		
 	}
 
-	private LinkedList<Character> nextValFromD(int row, int col) {
-
-		return D[row][col];
-	}
+	
 }

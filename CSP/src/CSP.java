@@ -1,18 +1,20 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public abstract class CSP<E> {
+public abstract class CSP<T> {
 
 	protected char[][] initV;
-	protected LinkedList<E>[][] D;
+	protected LinkedList<T>[][] D;
 	protected long t0;
 	protected int nodes;
 	protected int returns;
-	protected ArrayList<Integer> variables;
+	protected ArrayList<Integer> nextVars;
 	protected LinkedList<char[][]> solutions;
 	
 	protected abstract boolean checkRestrictions(char[][] V);
-	public abstract LinkedList<char[][]> solve();
+	public LinkedList<char[][]> solve(){
+		return backtracking();
+	};
 	protected ArrayList<Integer> getVars() {
 		return emptyVars();
 	}
@@ -23,7 +25,7 @@ public abstract class CSP<E> {
 		t0 = java.lang.System.currentTimeMillis();
 		nodes = 0;
 		returns = 0;
-		variables = getVars();
+		nextVars = getVars();
 
 		backtracking(0, initV);
 
@@ -38,5 +40,48 @@ public abstract class CSP<E> {
 		return solutions;
 	}
 
-	protected abstract void backtracking(int lvl, char[][] vals);
+	protected void backtracking(int lvl, char[][] vals) {
+
+		if (lvl == nextVars.size()) {
+			if (checkRestrictions(vals)) {
+				if (solutions.size() == 0) {
+					System.out.println("First solution. Time: " + (java.lang.System.currentTimeMillis() - t0) + " ms. "
+							+ nodes + " nodes visited, " + returns + " returns");
+
+				}
+				solutions.add(vals);;
+			} else {
+				returns++;
+			}
+			return;
+		}
+
+		int var = nextVars.get(lvl);
+		int row = Math.floorDiv(var, 10);
+		int col = var % 10;
+		char[][] sol;
+
+		for (T v : nextVals(row, col)) {
+			nodes++;
+			sol = new char[vals.length][vals[0].length];
+			for (int chrow = 0; chrow < sol.length; chrow++) {
+				sol[chrow] = vals[chrow].clone();
+			}
+
+			insert(sol, row, col, v, lvl);
+		}
+		returns++;
+
+	}
+	
+	protected abstract void insert(char[][] sol, int row, int col, T v, int lvl);
+	
+	protected LinkedList<T> nextVals(int row, int col) {
+		return nextValFromD(row, col);
+	}
+
+	protected LinkedList<T> nextValFromD(int row, int col) {
+
+		return D[row][col];
+	}
 }
