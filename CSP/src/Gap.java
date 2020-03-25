@@ -22,7 +22,7 @@ public class Gap {
 			else
 				value[i]=puzzle[row0][col0+i];
 		}
-		return value.toString();
+		return String.valueOf(value);
 	}
 
 	@Override

@@ -29,9 +29,8 @@ public class Jolka extends CSP<String> {
 					D[0][ix].add(word);
 				}
 			}
-				System.out.println(ix+" "+D[0][ix]);
-
-		} // both hor and ver
+//				System.out.println(ix+" "+D[0][ix]);
+		}
 
 	}
 
@@ -83,14 +82,12 @@ public class Jolka extends CSP<String> {
 	protected boolean checkRestrictions(char[][] V) {
 		Set<String> foundWords = new HashSet<String>();
 		String word = "";
-		for (char[] d : V) {
-			System.out.println(d);
-		}
 
 		for (Integer var : nextVars) {
-			word = fields.get(var).getValue(V);
-//			if (!words.contains(word))
-//				return false;
+			word = fields.get(var).getValue(V); 
+			if (!words.contains(word)) {
+				return false;
+			}
 			if (foundWords.contains(word))
 				return false;
 			else
@@ -103,7 +100,7 @@ public class Jolka extends CSP<String> {
 	protected ArrayList<Integer> emptyVars() {
 		ArrayList<Integer> gaps = new ArrayList<Integer>();
 		for (int i = 0; i < fields.size(); i++) {
-				gaps.add(i);
+			gaps.add(i);
 		}
 		return gaps;
 	}
@@ -144,7 +141,7 @@ public class Jolka extends CSP<String> {
 
 	@Override
 	protected LinkedList<String> nextValFromD(int var) {
-		
+
 		return D[0][var];
 	}
 
