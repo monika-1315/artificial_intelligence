@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class App {
 
@@ -6,11 +7,12 @@ public class App {
 
 		Loader load1=new Loader("Sudoku.csv");
 		Sudoku s1=load1.loadSudoku(2);
-		s1.solve();
-		Sudoku s2=load1.loadSudoku(42);
-				s2.solve();
-		Sudoku s3=load1.loadSudoku(46);
-				s3.solve();
+//		s1.solve();
+//		load1.loadSudoku(3).solve();
+		Jolka j0= Loader.loadJolka("Jolka/puzzle0", "Jolka/words0");
+
+		boolean[] wordsIncluded=new boolean[2];
+		System.out.println(wordsIncluded);
 	}
 
 }

@@ -41,9 +41,11 @@ public class Loader {
 		scanP.close();
 		Scanner scanW=new Scanner(new File(wordsFile));
 		ArrayList<String> words= new ArrayList<String>();
-		while (scanP.hasNext()) {
-			puzzle.add(scanP.nextLine().toCharArray());
+		while (scanW.hasNext()) {
+			words.add(scanW.nextLine());
 		}
-		return new Jolka(puzzle, words);
+		char[][] puzzleAr= new char[puzzle.size()][puzzle.get(0).length];
+		puzzleAr=puzzle.toArray(puzzleAr);
+		return new Jolka(puzzleAr, words);
 	}
 }
