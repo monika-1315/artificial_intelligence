@@ -139,7 +139,7 @@ public class Jolka extends CSP<String> {
 			backtracking(lvl + 1, sol);//keep solving
 		else {
 			returns++;
-			return;//
+			
 		}
 
 	}

@@ -66,6 +66,9 @@ public abstract class CSP<T> {
 			}
 
 			insert(sol, var, v, lvl);
+//			if (checkRestrictions(sol, true))
+//				backtracking(lvl + 1, sol);
+//			else returns++;
 		}
 		returns++;//no more values for this variable
 
