@@ -58,7 +58,7 @@ public abstract class CSP<T> {
 		int var = nextVars.get(lvl);
 		char[][] sol;
 
-		for (T v : nextVals(var)) {
+		for (T v : nextVals(var, this.D)) {
 			nodes++;
 			sol = new char[vals.length][vals[0].length];
 			for (int chrow = 0; chrow < sol.length; chrow++) {
@@ -73,9 +73,9 @@ public abstract class CSP<T> {
 	
 	protected abstract void insert(char[][] sol, int fieldVar, T v, int lvl);
 	
-	protected LinkedList<T> nextVals(int var) {//static heuristic for picking next values of the variable
-		return nextValFromD(var);
+	protected LinkedList<T> nextVals(int var, LinkedList<T>[][] D) {//static heuristic for picking next values of the variable
+		return nextValFromD(var, D);
 	}
 
-	protected abstract LinkedList<T> nextValFromD(int var);
+	protected abstract LinkedList<T> nextValFromD(int var, LinkedList<T>[][] D);
 }
