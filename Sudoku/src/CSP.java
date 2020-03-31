@@ -21,7 +21,7 @@ public abstract class CSP<T> {
 	}
 	protected abstract ArrayList<Integer> emptyVars();
 	
-	protected LinkedList<char[][]> backtracking() {
+	public LinkedList<char[][]> backtracking() {
 		solutions = new LinkedList<char[][]>();
 		t0 = java.lang.System.currentTimeMillis();
 		nodes = 0;
