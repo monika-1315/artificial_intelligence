@@ -7,6 +7,7 @@ public class Jolka extends CSP<String> {
 
 	private ArrayList<String> words;
 	private ArrayList<Gap> fields;
+	//I need to save both board char[][] and fields where words can be inserted as one
 
 	public Jolka(char[][] puzzle, ArrayList<String> words) {
 		this.initV = puzzle;
@@ -14,13 +15,11 @@ public class Jolka extends CSP<String> {
 		fields = new ArrayList<Gap>();
 		lookForFields(true);
 		lookForFields(false);
-//		System.out.println(fields[0]);
-//		System.out.println(fields[1]);
 		checkDomains();
 	}
 
 	private void checkDomains() {
-		D = new LinkedList[2][];
+		D = new LinkedList[1][];//I won't use board like in sudoku, only one array of fields - left like that to keep it more abstract and generic
 		D[0] = new LinkedList[fields.size()];
 		for (int ix = 0; ix < fields.size(); ix++) {
 			D[0][ix] = new LinkedList<String>();
@@ -29,7 +28,6 @@ public class Jolka extends CSP<String> {
 					D[0][ix].add(word);
 				}
 			}
-//				System.out.println(ix+" "+D[0][ix]);
 		}
 
 	}
@@ -59,13 +57,13 @@ public class Jolka extends CSP<String> {
 				}
 				val = initV[row][col];
 				if (val != '#') {
-					if (length == 0) {
+					if (length == 0) {//mark the beginning
 						row0 = row;
 						col0 = col;
 					}
 					length++;
-				} else {
-					if (length > 1) {
+				} else {//the end of word
+					if (length > 1) {//we don't check words with length 1
 						fields.add(new Gap(row0, col0, length, isHorizontal));
 					}
 					length = 0;
@@ -79,25 +77,27 @@ public class Jolka extends CSP<String> {
 	}
 
 	@Override
-	protected boolean checkRestrictions(char[][] V) {
+	protected boolean checkRestrictions(char[][] V, boolean partial) {
 		Set<String> foundWords = new HashSet<String>();
 		String word = "";
 
 		for (Integer var : nextVars) {
-			word = fields.get(var).getValue(V); 
-			if (!words.contains(word)) {
-				return false;
+			word = fields.get(var).getValue(V);
+			if (!(partial&&word.contains("_"))) {//accept empty fields while partial checking
+				if (!words.contains(word)) {
+					return false;
+				}
+				if (foundWords.contains(word))
+					return false;
+				else
+					foundWords.add(word);
 			}
-			if (foundWords.contains(word))
-				return false;
-			else
-				foundWords.add(word);
 		}
 		return true;
 	}
 
 	@Override
-	protected ArrayList<Integer> emptyVars() {
+	protected ArrayList<Integer> emptyVars() {//numbers of fields in a row (numbers to get domains of fields)
 		ArrayList<Integer> gaps = new ArrayList<Integer>();
 		for (int i = 0; i < fields.size(); i++) {
 			gaps.add(i);
@@ -109,8 +109,8 @@ public class Jolka extends CSP<String> {
 	protected void insert(char[][] sol, int field, String v, int lvl) {
 		char[] word = v.toCharArray();
 		Gap gap = fields.get(field);
-//		System.out.println(gap);
 		int row, col;
+		//check whether inserting word won't cause conflict on the board
 		for (int i = 0; i < word.length; i++) {
 			if (gap.isHorizontal) {
 				row = gap.row0;
@@ -119,12 +119,12 @@ public class Jolka extends CSP<String> {
 				row = gap.row0 + i;
 				col = gap.col0;
 			}
-//			System.out.println(sol[row][col]);
 			if (sol[row][col] != '_' && sol[row][col] != word[i]) {
 				returns++;
 				return;
 			}
 		}
+		//insert the word
 		for (int i = 0; i < word.length; i++) {
 			if (gap.isHorizontal) {
 				row = gap.row0;
@@ -135,7 +135,12 @@ public class Jolka extends CSP<String> {
 			}
 			sol[row][col] = word[i];
 		}
-		backtracking(lvl + 1, sol);
+		if (checkRestrictions(sol, true))//check whether the word is already on the board
+			backtracking(lvl + 1, sol);//keep solving
+		else {
+			returns++;
+			return;//
+		}
 
 	}
 

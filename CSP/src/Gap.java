@@ -1,4 +1,4 @@
-
+/**Class representing gap of fields in Jolka in which the words can be inserted*/
 public class Gap {
 	int row0;
 	int col0;
@@ -14,7 +14,6 @@ public class Gap {
 	}
 	
 	public String getValue(char[][] puzzle) {
-//		System.out.println(this.toString());
 		char[] value= new char[length];
 		for(int i =0; i<length; i++) {
 			if(!isHorizontal)

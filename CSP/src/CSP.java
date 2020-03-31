@@ -3,19 +3,20 @@ import java.util.LinkedList;
 
 public abstract class CSP<T> {
 
-	protected char[][] initV;
-	protected LinkedList<T>[][] D;
+	protected char[][] initV ;//initial board
+	protected LinkedList<T>[][] D; //domains
 	protected long t0;
 	protected int nodes;
 	protected int returns;
-	protected ArrayList<Integer> nextVars;
-	protected LinkedList<char[][]> solutions;
+	protected ArrayList<Integer> nextVars;//Variables to check
+	protected LinkedList<char[][]> solutions;//found soultions
 	
-	protected abstract boolean checkRestrictions(char[][] V);
+	protected abstract boolean checkRestrictions(char[][] V, boolean partial);
+	
 	public LinkedList<char[][]> solve(){
 		return backtracking();
 	};
-	protected ArrayList<Integer> getVars() {
+	protected ArrayList<Integer> getVars() {//static heuristic for picking next variables
 		return emptyVars();
 	}
 	protected abstract ArrayList<Integer> emptyVars();
@@ -26,7 +27,6 @@ public abstract class CSP<T> {
 		nodes = 0;
 		returns = 0;
 		nextVars = getVars();
-//		System.out.println(nextVars);
 
 		backtracking(0, initV);
 
@@ -42,17 +42,11 @@ public abstract class CSP<T> {
 	}
 
 	protected void backtracking(int lvl, char[][] vals) {
-//		for (char[] sol : vals) {
-//			System.out.println(sol);
-//		}
 		if (lvl == nextVars.size()) {
-			
-			if (checkRestrictions(vals)) {
-				
+			if (checkRestrictions(vals, false)) {
 				if (solutions.size() == 0) {
 					System.out.println("First solution. Time: " + (java.lang.System.currentTimeMillis() - t0) + " ms. "
 							+ nodes + " nodes visited, " + returns + " returns");
-
 				}
 				solutions.add(vals);
 			} else {
@@ -62,12 +56,10 @@ public abstract class CSP<T> {
 		}
 
 		int var = nextVars.get(lvl);
-		
 		char[][] sol;
 
 		for (T v : nextVals(var)) {
 			nodes++;
-//			System.out.println(v);
 			sol = new char[vals.length][vals[0].length];
 			for (int chrow = 0; chrow < sol.length; chrow++) {
 				sol[chrow] = vals[chrow].clone();
@@ -75,13 +67,13 @@ public abstract class CSP<T> {
 
 			insert(sol, var, v, lvl);
 		}
-		returns++;
+		returns++;//no more values for this variable
 
 	}
 	
 	protected abstract void insert(char[][] sol, int fieldVar, T v, int lvl);
 	
-	protected LinkedList<T> nextVals(int var) {
+	protected LinkedList<T> nextVals(int var) {//static heuristic for picking next values of the variable
 		return nextValFromD(var);
 	}
 
