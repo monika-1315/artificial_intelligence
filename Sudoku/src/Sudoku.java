@@ -1,12 +1,25 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
 public class Sudoku extends CSP<Character> {
 
-	public static int SUDOKU_SIZE = 9;
+	public static final int SUDOKU_SIZE = 9;
+	public static final int VAR_INORDER = 0;
+	public static final int VAR_DOMAIN_SORTED = 1;
+	public static final int VAR_RANDOM = 2;
+	public static final int VAL_INORDER = 0;
+	public static final int VAL_RANDOM = 1;
+	public static final boolean BACKTRACKING = false;
+	public static final boolean FORWARD_CHECKING = true;
+
+	private int pickVarHeur = 0;
+	private int pickValHeur = 0;
 
 	public Sudoku(char[] startVals) {
 		super();
@@ -26,6 +39,42 @@ public class Sudoku extends CSP<Character> {
 			} // cols
 		} // rows
 
+	}
+
+	public LinkedList<char[][]> solve(boolean method) {
+		pickVarHeur = 0;
+		pickVarHeur = 0;
+		printHeuristicsInfo();
+		if (method == BACKTRACKING)
+			return backtracking();
+		else
+			return forwardChecking();
+	}
+
+
+	public LinkedList<char[][]> solve(boolean method, int varHeur, int valHeur) {
+		pickVarHeur = varHeur;
+		pickVarHeur = valHeur;
+		printHeuristicsInfo();
+
+		if (method == BACKTRACKING)
+			return backtracking();
+		else
+			return forwardChecking();
+	}
+
+	private void printHeuristicsInfo() {
+		if (pickVarHeur == VAR_DOMAIN_SORTED)
+			System.out.print("Variables - sorted by initial domain sizes ");
+		else if (pickVarHeur == VAR_RANDOM)
+			System.out.print("Variables - picked in a random way ");
+		else // VAL_INORDER
+			System.out.print("Variables - in order of definition ");
+		if (pickValHeur == VAL_RANDOM)
+			System.out.println("Values - picked in a random way");
+		else // VAL_INORDER
+			System.out.println("Values - in order of definition");
+		
 	}
 
 	private boolean filterDomains(char[][] V, int row, int col, LinkedList<Character>[][] D) {
@@ -49,8 +98,8 @@ public class Sudoku extends CSP<Character> {
 		}
 		int r0 = Math.floorDiv(row, 3);
 		int c0 = Math.floorDiv(col, 3);
-		for (int r = 3*r0; r < 3*r0 + 3; r++) {
-			for (int c = 3*c0; c < 3*c0 + 3; c++) {
+		for (int r = 3 * r0; r < 3 * r0 + 3; r++) {
+			for (int c = 3 * c0; c < 3 * c0 + 3; c++) {
 				if (r != row && c != col) {
 					D[r][c].remove(new Character(val));
 					if (!checkDomain(V, r, c, D))
@@ -131,36 +180,20 @@ public class Sudoku extends CSP<Character> {
 		return true;
 	}
 
-	public LinkedList<char[][]> forwardChecking() {
-		solutions = new LinkedList<char[][]>();
-		t0 = java.lang.System.currentTimeMillis();
-		nodes = 0;
-		returns = 0;
-		nextVars = getVars();
+	private LinkedList<char[][]> forwardChecking() {
+		initialize();
 
 		forwardChecking(0, initV, D);
 
-		System.out.println("FC " + (java.lang.System.currentTimeMillis() - t0) + " ms. Found " + solutions.size()
-				+ " solutions " + nodes + " nodes visited " + returns + " returns");
-		for (char[][] sol : solutions) {
-			printSol(sol);
-		}
+		printSolutions();
 		return solutions;
 	}
 
-	protected void forwardChecking(int lvl, char[][] vals, LinkedList<Character>[][] dom0) {
+	private void forwardChecking(int lvl, char[][] vals, LinkedList<Character>[][] dom0) {
 //		System.out.println("lvl= " + lvl);
 //		System.out.println(D[0][0]);
 		if (lvl == nextVars.size()) {
-			if (checkRestrictions(vals, false)) {
-				if (solutions.size() == 0) {
-					System.out.println("First solution. Time: " + (java.lang.System.currentTimeMillis() - t0) + " ms. "
-							+ nodes + " nodes visited, " + returns + " returns");
-				}
-				solutions.add(vals);
-			} else {
-				returns++;
-			}
+			checkFullSolution(vals);
 			return;
 		}
 
@@ -200,6 +233,17 @@ public class Sudoku extends CSP<Character> {
 
 	}
 
+	@Override
+	protected ArrayList<Integer> getVars() {// static heuristic for picking next variables
+		if (pickVarHeur == VAR_DOMAIN_SORTED)
+			return domSortVars();
+		else if (pickVarHeur == VAR_RANDOM)
+			return randomVars();
+		else // VAL_INORDER
+			return emptyVars();
+	}
+
+	@Override
 	protected ArrayList<Integer> emptyVars() {// heuristic of selecting variables
 		ArrayList<Integer> vars = new ArrayList<Integer>();
 		for (int row = 0; row < SUDOKU_SIZE; row++) {
@@ -213,30 +257,57 @@ public class Sudoku extends CSP<Character> {
 		return vars;
 	}
 
+	protected ArrayList<Integer> domSortVars() {
+		ArrayList<Integer> list = emptyVars();
+		Collections.sort(list, new LengthComparator());
+		return list;
+	}
+
+	class LengthComparator implements Comparator<Integer> {
+
+		@Override
+		public int compare(Integer o1, Integer o2) {
+			int i1 = D[Math.floorDiv(o1, 10)][Math.floorMod(o1, 10)].size();
+			int i2 = D[Math.floorDiv(o2, 10)][Math.floorMod(o2, 10)].size();
+
+			return i1 - i2;
+		}
+
+	}
+
+	protected ArrayList<Integer> randomVars() {
+		ArrayList<Integer> list = emptyVars();
+		Collections.shuffle(list);
+		return list;
+	}
+
 	@Override
 	protected void insert(char[][] sol, int var, Character v, int lvl) {
 		int row = Math.floorDiv(var, 10);
 		int col = var % 10;
 		sol[row][col] = v;
-		if (checkRestrictions(sol, true))
-			backtracking(lvl + 1, sol);
-		else
-			returns++;
-
 	}
 
 	@Override
+	protected LinkedList<Character> nextVals(int var, LinkedList<Character>[][] D) {
+		if (pickValHeur == VAL_RANDOM)
+			return randValFromD(var, D);
+		else // VAL_INORDER
+			return nextValFromD(var, D);
+	}
+
 	protected LinkedList<Character> nextValFromD(int var, LinkedList<Character>[][] D) {
 		int row = Math.floorDiv(var, 10);
 		int col = var % 10;
 		return D[row][col];
 	}
 
-	private static void printSol(char[][] board) {
-		for (int r = 0; r < board.length; r++) {
-			System.out.println(board[r]);
-		}
-		System.out.println();
+	private LinkedList<Character> randValFromD(int var, LinkedList<Character>[][] D) {
+		int row = Math.floorDiv(var, 10);
+		int col = var % 10;
+		LinkedList<Character> list = D[row][col];
+		Collections.shuffle(list);
+		return list;
 	}
 
 }
