@@ -47,17 +47,17 @@ public class Sudoku extends CSP<Character> {
 					return false;
 			}
 		}
-//		int r0 = Math.floorDiv(row, 3);
-//		int c0 = Math.floorDiv(col, 3);
-//		for (int r = r0; r < r0 + 3; r++) {
-//			for (int c = c0; c < c0 + 3; c++) {
-//				if (r != row && c != col) {
-//					D[r][c].remove(new Character(val));
-//					if (!checkDomain(V, r, c, D))
-//						return false;
-//				}
-//			}
-//		}
+		int r0 = Math.floorDiv(row, 3);
+		int c0 = Math.floorDiv(col, 3);
+		for (int r = 3*r0; r < 3*r0 + 3; r++) {
+			for (int c = 3*c0; c < 3*c0 + 3; c++) {
+				if (r != row && c != col) {
+					D[r][c].remove(new Character(val));
+					if (!checkDomain(V, r, c, D))
+						return false;
+				}
+			}
+		}
 		return true;
 	}
 
@@ -171,9 +171,9 @@ public class Sudoku extends CSP<Character> {
 		char[][] sol;
 		LinkedList<Character>[][] doms;
 
-//		if (vals[row][col] == '.') {
-//			forwardChecking(lvl + 1, vals, dom0);
-//		} else {
+		if (vals[row][col] != '.') {
+			forwardChecking(lvl + 1, vals, dom0);
+		} else {
 			for (char v : nextVals(var, dom0)) {
 				nodes++;
 				sol = new char[vals.length][vals[0].length];
@@ -196,7 +196,7 @@ public class Sudoku extends CSP<Character> {
 					forwardChecking(lvl + 1, sol, doms);
 			} // for possible values of variable
 			returns++;// no more values for this variable
-//		} // if var is empty
+		} // if var is empty
 
 	}
 

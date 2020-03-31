@@ -6,7 +6,7 @@ public class App {
 
 		Loader load1 = new Loader("Sudoku.csv");
 		Sudoku s1 = load1.loadSudoku(2);
-//		s1.solve();
+		s1.solve();
 		s1.forwardChecking();
 	}
 
