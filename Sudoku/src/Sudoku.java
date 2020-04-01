@@ -57,10 +57,14 @@ public class Sudoku extends CSP<Character> {
 		pickVarHeur = valHeur;
 		printHeuristicsInfo();
 
-		if (method == BACKTRACKING)
+		if (method == BACKTRACKING) {
+			System.out.print("Backtracking ");
 			return backtracking();
-		else
+		}
+		else {
+			System.out.print("Forward checking ");
 			return forwardChecking();
+			}
 	}
 
 	private void printHeuristicsInfo() {
@@ -79,10 +83,8 @@ public class Sudoku extends CSP<Character> {
 
 	private boolean filterDomains(char[][] V, int row, int col, LinkedList<Character>[][] D) {
 		char val = V[row][col];
-//		System.out.println(val +" row "+row+" col "+col);
 		for (int i = 0; i < SUDOKU_SIZE; i++) {
 			if (i != row) {
-//				System.out.println("row= "+row+" col= "+col+" i= "+i+D[i][col]+" val "+val);
 				D[i][col].remove(new Character(val));
 				if (!checkDomain(V, i, col, D))
 					return false;
@@ -90,7 +92,6 @@ public class Sudoku extends CSP<Character> {
 		}
 		for (int j = 0; j < SUDOKU_SIZE; j++) {
 			if (j != col) {
-//				System.out.println("row= "+row+" col= "+col+" j= "+j+D[row][j]+" val "+val);
 				D[row][j].remove(new Character(val));
 				if (!checkDomain(V, row, j, D))
 					return false;
@@ -115,8 +116,6 @@ public class Sudoku extends CSP<Character> {
 
 		domSize = D[row][col].size();
 		if (domSize == 0) {
-//			System.out.println(row + " " + col);
-//			printSol(V);
 			returns++;
 			return false;
 		}
@@ -190,17 +189,13 @@ public class Sudoku extends CSP<Character> {
 	}
 
 	private void forwardChecking(int lvl, char[][] vals, LinkedList<Character>[][] dom0) {
-//		System.out.println("lvl= " + lvl);
-//		System.out.println(D[0][0]);
 		if (lvl == nextVars.size()) {
 			checkFullSolution(vals);
 			return;
 		}
-
 		int var = nextVars.get(lvl);
 		int row = Math.floorDiv(var, 10);
 		int col = var % 10;
-
 		char[][] sol;
 		LinkedList<Character>[][] doms;
 

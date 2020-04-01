@@ -34,7 +34,7 @@ public abstract class CSP<T> {
 		System.out.println(" "+(java.lang.System.currentTimeMillis() - t0) + " ms. Found " + solutions.size()
 				+ " solutions " + nodes + " nodes visited " + returns + " returns");
 		for (char[][] sol : solutions) {
-//			printSol(sol);
+			printSol(sol);
 		}
 	}
 
