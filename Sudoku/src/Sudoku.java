@@ -54,7 +54,7 @@ public class Sudoku extends CSP<Character> {
 
 	public LinkedList<char[][]> solve(boolean method, int varHeur, int valHeur) {
 		pickVarHeur = varHeur;
-		pickVarHeur = valHeur;
+		pickValHeur = valHeur;
 		printHeuristicsInfo();
 
 		if (method == BACKTRACKING) {
@@ -119,11 +119,12 @@ public class Sudoku extends CSP<Character> {
 			returns++;
 			return false;
 		}
-		if (domSize == 1 && V[row][col] == '.') {
-			V[row][col] = D[row][col].getFirst();
-			if (!filterDomains(V, row, col, D))
-				return false;
-		}
+//		if (domSize == 1 && V[row][col] == '.') {
+//			V[row][col] = D[row][col].getFirst();
+//			nodes++;
+//			if (!filterDomains(V, row, col, D))
+//				return false;
+//		}
 		return true;
 	}
 
@@ -206,16 +207,7 @@ public class Sudoku extends CSP<Character> {
 				nodes++;
 				sol = new char[vals.length][vals[0].length];
 				doms = new LinkedList[vals.length][vals[0].length];
-				for (int chrow = 0; chrow < sol.length; chrow++) {
-					sol[chrow] = vals[chrow].clone();
-					for (int chcol = 0; chcol < doms[0].length; chcol++) {
-//						doms[chrow][chcol] =(LinkedList<Character>) dom0[chrow][chcol].clone();
-						doms[chrow][chcol] = new LinkedList<Character>();
-						for (char domVal : dom0[chrow][chcol]) {
-							doms[chrow][chcol].add(domVal);
-						}
-					}
-				} // copy
+				copy(sol, doms, vals, dom0);
 				sol[row][col] = v;
 				doms[row][col].clear();
 				doms[row][col].add(v);
@@ -226,8 +218,20 @@ public class Sudoku extends CSP<Character> {
 			returns++;// no more values for this variable
 		} // if var is empty
 
-	}
+	}//forward checking
 
+	private void copy(char[][] sol, LinkedList<Character>[][] doms, char[][] vals, LinkedList<Character>[][] dom0) {
+		for (int chrow = 0; chrow < sol.length; chrow++) {
+			sol[chrow] = vals[chrow].clone();
+			for (int chcol = 0; chcol < doms[0].length; chcol++) {
+//				doms[chrow][chcol] =(LinkedList<Character>) dom0[chrow][chcol].clone();
+				doms[chrow][chcol] = new LinkedList<Character>();
+				for (char domVal : dom0[chrow][chcol]) {
+					doms[chrow][chcol].add(domVal);
+				}
+			}
+		} // copy
+	}
 	@Override
 	protected ArrayList<Integer> getVars() {// static heuristic for picking next variables
 		if (pickVarHeur == VAR_DOMAIN_SORTED)
@@ -285,8 +289,9 @@ public class Sudoku extends CSP<Character> {
 
 	@Override
 	protected LinkedList<Character> nextVals(int var, LinkedList<Character>[][] D) {
-		if (pickValHeur == VAL_RANDOM)
+		if (pickValHeur == VAL_RANDOM) {
 			return randValFromD(var, D);
+		}
 		else // VAL_INORDER
 			return nextValFromD(var, D);
 	}
