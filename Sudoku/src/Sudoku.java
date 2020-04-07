@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class Sudoku extends CSP<Character> {
@@ -50,6 +51,7 @@ public class Sudoku extends CSP<Character> {
 		pickVarHeur = 0;
 		pickVarHeur = 0;
 //		printHeuristicsInfo();
+		numbersCount= new int[9];
 		if (method == BACKTRACKING)
 			return backtracking();
 		else
@@ -60,7 +62,8 @@ public class Sudoku extends CSP<Character> {
 	public LinkedList<char[][]> solve(boolean method, int valHeur, int varHeur) {
 		pickVarHeur = varHeur;
 		pickValHeur = valHeur;
-		printHeuristicsInfo();
+//		printHeuristicsInfo();
+		numbersCount= new int[9];
 
 		if (method == BACKTRACKING) {
 			System.out.print("Backtracking ");
@@ -198,7 +201,7 @@ public class Sudoku extends CSP<Character> {
 
 	private LinkedList<char[][]> forwardChecking() {
 		initialize();
-
+		
 		forwardChecking(0, initV, D);
 
 		printSolutions();
@@ -275,10 +278,29 @@ public class Sudoku extends CSP<Character> {
 		}
 		return vars;
 	}
+	class EmptyColsComparator implements Comparator<Integer> {
+
+		@Override
+		public int compare(Integer o1, Integer o2) {
+			int count1=0, count2=0;
+			for (int r1=0; r1<SUDOKU_SIZE; r1++) {
+				if (initV[r1][o1]=='.')
+					count1++;
+			}
+			for (int r2=0; r2<SUDOKU_SIZE; r2++) {
+				if (initV[r2][o2]=='.')
+					count2++;
+			}
+			return count1 - count2;
+		}
+
+	}
 	
 	protected ArrayList<Integer> emptyVarsCols() {
 		ArrayList<Integer> vars = new ArrayList<Integer>();
-		for (int col = 0; col < SUDOKU_SIZE; col++) {
+		LinkedList<Integer> cols= new LinkedList<Integer>(Arrays.asList(0,1,2,3,4,5,6,7,8));
+		Collections.sort(cols, new EmptyColsComparator());
+		for (int col: cols) {
 			for (int row = 0; row < SUDOKU_SIZE; row++) {
 				if (initV[row][col] == '.')
 					vars.add(row * 10 + col);

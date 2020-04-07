@@ -31,8 +31,9 @@ public abstract class CSP<T> {
 	}
 
 	protected void printSolutions() {
-		System.out.println(" "+(java.lang.System.currentTimeMillis() - t0) + " ms. Found " + solutions.size()
-				+ " solutions " + nodes + " nodes visited " + returns + " returns");
+		System.out.println("Final\n"+(java.lang.System.currentTimeMillis() - t0) + "\n" + nodes + "\n" + returns);
+//		System.out.println(" "+(java.lang.System.currentTimeMillis() - t0) + " ms. Found " + solutions.size()
+//				+ " solutions " + nodes + " nodes visited " + returns + " returns");
 		for (char[][] sol : solutions) {
 //			printSol(sol);
 		}
@@ -77,8 +78,10 @@ public abstract class CSP<T> {
 	protected void checkFullSolution(char[][] vals) {
 		if (checkRestrictions(vals, false)) {
 			if (solutions.size() == 0) {
-				System.out.println("  First solution. Time: " + (java.lang.System.currentTimeMillis() - t0) + " ms. "
-						+ nodes + " nodes visited, " + returns + " returns");
+				System.out.println("First\n" + (java.lang.System.currentTimeMillis() - t0) + "\n"
+						+ nodes + " \n" + returns );
+//				System.out.println("  First solution. Time: " + (java.lang.System.currentTimeMillis() - t0) + " ms. "
+//						+ nodes + " nodes visited, " + returns + " returns");
 			}
 			solutions.add(vals);
 		} else {
