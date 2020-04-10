@@ -7,8 +7,8 @@ public class App {
 		int width = 8;
 
 		ConnectFour board = new ConnectFour(width, height);
-
-		board.play();
+		RandomPlayer ai=new RandomPlayer(board);
+		board.playWithComputer(ai);
 	}
 
 }
