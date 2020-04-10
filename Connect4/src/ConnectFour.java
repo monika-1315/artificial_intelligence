@@ -144,29 +144,14 @@ public class ConnectFour {
 	}
 
 	public void play() {
-		try (Scanner input = new Scanner(System.in)) {
-			System.out.println("Use 0-" + (width - 1) + " to choose a column");
-			System.out.println(this.toString());
-			int moves = height * width;
-
-			for (int player = 0; moves-- > 0; player = 1 - player) {
-				char symbol = PLAYERS[player];
-
-				chooseAndDrop(symbol, input);
-
-				System.out.println(this.toString());
-
-				if (isWinningPlay()) {
-					System.out.println("\nPlayer " + symbol + " wins!");
-					return;
-				}
-			}
-
-			System.out.println("Game over. No winner. Try again!");
-		}
+		play(null, null);
 	}
 	
-	public void playWithComputer(ComputerPlayer ai) {
+	public void play(ComputerPlayer ai) {
+		play(null, ai);
+	}
+			
+	public void play(ComputerPlayer ai1, ComputerPlayer ai2) {
 		try (Scanner input = new Scanner(System.in)) {
 			System.out.println("Use 0-" + (width - 1) + " to choose a column");
 			System.out.println(this.toString());
@@ -176,10 +161,20 @@ public class ConnectFour {
 				char symbol = PLAYERS[player];
 				
 				if(player==0)
-					chooseAndDrop(symbol, input);
-				else 
-					drop(symbol, ai.nextMove());
-
+					if(ai1==null) {
+						chooseAndDrop(symbol, input);
+					}
+					else {
+						drop(symbol, ai1.nextMove());
+					}
+				else {
+					if(ai2==null) {
+						chooseAndDrop(symbol, input);
+					}
+					else {
+						drop(symbol, ai2.nextMove());
+					}
+				}
 				System.out.println(this.toString());
 
 				if (isWinningPlay()) {
