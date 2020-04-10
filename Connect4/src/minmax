@@ -1,0 +1,20 @@
+JE¯ELI tablica jest ostateczna (pe³na lub ze zwyciêzc¹)
+	ZWRÓÆ wartoœæ funkcji oceny tablicy
+    
+JE¯ELI gracz maksymalizuj¹cy :
+     Przypisz najlepszej wartoœci najmniejsz¹ mo¿liw¹ wartoœæ
+     DLA KA¯DEGO ruchu na planszy :
+         aktualn¹ wartoœci¹ jest wynik wywo³ania minmax dla zmienionej planszy, g³êbokoœci o 1 wiêkszej, gracza minimalizuj¹cego
+         JE¯ELI aktualna wartoœæ jest wiêksza od najlepszej znalezionej
+          	przypisz aktualn¹ wartoœæ do najlepszej znalezionej
+     ZWRÓÆ najlepsz¹ znalezion¹ wartoœæ
+     KONIEC
+
+WPP :
+     Przypisz najlepszej wartoœci najwiêksz¹ mo¿liw¹ wartoœæ
+     DLA KA¯DEGO ruchu na planszy :
+         przypisz aktualnej wartoœci wynik wywo³ania minmax dla zmienionej planszy, g³êbokoœci o 1 wiêkszej, gracza maksymalizuj¹cego
+         JE¯ELI aktualna wartoœæ jest mniejsza od najlepszej znalezionej
+          	przypisz aktualn¹ wartoœæ do najlepszej znalezionej
+     ZWRÓÆ najlepsz¹ znalezion¹ wartoœæ
+     KONIEC
