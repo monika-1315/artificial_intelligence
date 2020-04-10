@@ -10,6 +10,11 @@ public class ConnectFour {
 	}
 
 
+	public ConnectFour() {
+		board=new Board(7, 6);
+	}
+
+
 	@Override
 	public String toString() {
 		return board.toString();
