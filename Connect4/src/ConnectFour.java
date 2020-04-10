@@ -101,8 +101,15 @@ public class ConnectFour {
 		boolean isDropped = false;
 		do {
 			System.out.println("\nPlayer " + symbol + " turn: ");
-			int col = input.nextInt();
-			isDropped = drop(symbol, col);
+			try{
+				int col = input.nextInt();
+				isDropped = drop(symbol, col);
+			}
+			catch(Exception e) {
+				System.err.println("Enter correct number!");
+				input.next();
+			}
+			
 		} while (!isDropped);
 	}
 
