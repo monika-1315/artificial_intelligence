@@ -5,7 +5,7 @@ public class App {
 		int width = 7;
 
 		ConnectFour board = new ConnectFour(width, height);
-		RandomPlayer ai=new RandomPlayer(board);
+		ComputerPlayer ai=new MinMaxPlayer(board.getBoard(),1);
 		board.play(ai);
 	}
 
