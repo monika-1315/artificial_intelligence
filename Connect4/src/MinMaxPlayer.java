@@ -52,8 +52,10 @@ public class MinMaxPlayer extends ComputerPlayer {
 			return 0;
 		int score = evaluate(board);
 
-		if (score == WON_POINTS || score == -WON_POINTS)
-			return score;
+		if (score == WON_POINTS)
+			return score-depth;
+		if (score == -WON_POINTS)
+			return score+depth;
 
 		if (board.isFull())
 			return 0;
