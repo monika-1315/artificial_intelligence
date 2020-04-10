@@ -5,7 +5,7 @@ public class App {
 		int width = 7;
 
 		ConnectFour board = new ConnectFour(width, height);
-		ComputerPlayer ai=new MinMaxPlayer(board.getBoard(),1);
+		ComputerPlayer ai=new MinMaxPlayer(board.getBoard(),1, 7);
 		board.play(ai);
 	}
 

@@ -58,6 +58,7 @@ public class ConnectFour {
 						chooseAndDrop(symbol, input);
 					}
 					else {
+						System.out.println("Computer "+player +" is thinking...");
 						board.drop(symbol, ai1.nextMove());
 					}
 				else {
@@ -65,6 +66,7 @@ public class ConnectFour {
 						chooseAndDrop(symbol, input);
 					}
 					else {
+						System.out.println("Computer "+player +" is thinking...");
 						board.drop(symbol, ai2.nextMove());
 					}
 				}

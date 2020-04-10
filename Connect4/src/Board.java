@@ -141,8 +141,7 @@ public class Board {
 		return false;
 	}
 
-	@Override
-	public Object clone() throws CloneNotSupportedException {
+	public Board clone() {
 		Board copy = new Board(width, height);
 		for (int row = 0; row < height; row++) {
 			for (int col = 0; col < width; col++) {
