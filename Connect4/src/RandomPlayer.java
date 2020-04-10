@@ -1,7 +1,7 @@
 
 public class RandomPlayer extends ComputerPlayer {
 
-	public RandomPlayer(ConnectFour game) {
+	public RandomPlayer(Board game) {
 		super(game);
 	}
 
@@ -11,7 +11,7 @@ public class RandomPlayer extends ComputerPlayer {
 		do {
 			move = (int)(Math.random() * game.getWidth());
 //			System.out.println(move);
-		} while (game.getGrid()[0][move] != '.');
+		} while (game.isColumnFull(move));
 		return move;
 	}
 

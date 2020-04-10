@@ -1,9 +1,9 @@
 
 public abstract class ComputerPlayer {
 
-	ConnectFour game;
+	Board game;
 
-	public ComputerPlayer(ConnectFour game) {
+	public ComputerPlayer(Board game) {
 		super();
 		this.game = game;
 	}
