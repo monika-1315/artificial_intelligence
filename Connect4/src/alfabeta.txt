@@ -1,0 +1,16 @@
+JEŻELI węzeł jest końcowy lub głębokość = 0
+     ZWRÓĆ wartość heurystyczną węzła
+JEŻELI przeciwnik ma zagrać w węźle
+     DLA KAŻDEGO potomka węzła:
+          przypisz wartości beta minimum z obecnej wartości i wywołania alfabeta dla potomka, głębokości o 1 mniejsze, alfa, beta
+     JEŻELI alfa≥beta
+        przerwij przeszukiwanie  {odcinamy gałąź Alfa}
+        zwróć beta
+	KONIEC
+     WPP 
+        DLA KAŻDEGO potomka węzła
+            przypisz wartości alfa maximum z obecnej wartości i wywołania alfabeta dla potomka, głębokości o 1 mniejsze, alfa, beta
+       JEŻELI alfa≥beta
+         przerwij przeszukiwanie  {odcinamy gałąź Beta}
+         zwróć alfa
+	 KONIEC

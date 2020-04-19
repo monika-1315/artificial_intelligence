@@ -151,5 +151,7 @@ public class Board {
 		return copy;
 	}
 
-	
+	public char[][] getGrid(){
+		return grid;
+	}
 }

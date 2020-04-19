@@ -2,13 +2,14 @@
 public class MinMaxPlayer extends ComputerPlayer {
 
 	int playerNum;
-	private static final int WON_POINTS = 100;
+	private int wonPoints = 100;
 	private int maxDepth;
 
 	public MinMaxPlayer(Board game, int playerNumber, int maxDepth) {
 		super(game);
 		this.playerNum = playerNumber;
 		this.maxDepth=maxDepth;
+		this.wonPoints=maxDepth * 2;
 	}
 	
 	public MinMaxPlayer(Board game) {
@@ -40,9 +41,9 @@ public class MinMaxPlayer extends ComputerPlayer {
 	private int evaluate(Board board) {
 		if (board.isWinningPlay()) {
 			if (board.getLastPlayerSymbol() == Board.PLAYERS[playerNum])
-				return WON_POINTS;
+				return wonPoints;
 			else
-				return -WON_POINTS;
+				return -wonPoints;
 		}
 		return 0;
 	}
@@ -52,9 +53,9 @@ public class MinMaxPlayer extends ComputerPlayer {
 			return 0;
 		int score = evaluate(board);
 
-		if (score == WON_POINTS)
+		if (score == wonPoints)
 			return score-depth;
-		if (score == -WON_POINTS)
+		if (score == -wonPoints)
 			return score+depth;
 
 		if (board.isFull())
