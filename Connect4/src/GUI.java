@@ -12,7 +12,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 public class GUI {
 
@@ -82,19 +85,49 @@ public class GUI {
 		dialog.add(new JLabel("Select player "+(i+1)));
 		
 		JComboBox<String> playersList = new JComboBox<>(playersOptions);
+		playersList.setForeground(Color.BLUE);
 		dialog.add(playersList);
 		JButton button = new JButton("Select");
 		button.addActionListener(new ButtonSelectedListener());
 		dialog.add(button);
 		
 //		dialog.pack();
-		dialog.setSize(200, 100);
+		dialog.setSize(200, 110);
 		dialog.setVisible(true);
 		waitForUser=true;
 		do {} while(waitForUser);
 		
 		dialog.setVisible(false);
-		return null;
+		switch (playersList.getSelectedIndex()) {
+		case (1):
+			return new RandomPlayer(board);
+		case (2):
+			return getMinMaxPlayer(i);
+		default:
+			return null;
+		}
+	}
+	private MinMaxPlayer getMinMaxPlayer(int i) {
+		JFrame dialog= new JFrame();
+		JPanel panel=new JPanel();
+		dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
+		dialog.add(new JLabel("Select minmax max depth:"));
+		
+		SpinnerModel model = new SpinnerNumberModel(5, 1, 40,1); 
+		JSpinner spinner = new JSpinner(model);
+		dialog.add(spinner);
+		JButton button = new JButton("Select");
+		button.addActionListener(new ButtonSelectedListener());
+		dialog.add(button);
+		
+		dialog.setSize(200, 110);
+		dialog.setVisible(true);
+		waitForUser=true;
+		do {} while(waitForUser);
+		
+		dialog.setVisible(false);
+		int depth=(int) spinner.getValue();
+		return new MinMaxPlayer(board, i, depth);
 	}
 	public void setInfo(String text) {
 		info.setText(text);
