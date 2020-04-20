@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,41 +16,31 @@ public class GUI {
 
 	private ConnectFour game;
 	private Board board;
-	private char player= 'X';
-	JFrame window = new JFrame();
-	
+	private int player= 0;
+	private JFrame window = new JFrame();
+	private JLabel info;
+	JButton[] dropButtons;// drop0, drop1, drop2, drop3, drop4, drop5, drop6;
 	public GUI() {
 		game = new ConnectFour();
 		board=game.getBoard();
+		dropButtons = new JButton[board.getWidth()];
+		createWindow();
 		startPlay();
 	}
-	private void startPlay() {
-
-		ComputerPlayer ai2=new MinMaxPlayer(game.getBoard(),1, 1);
-		
+	private void createWindow() {
 
 		JPanel ramka = new JPanel();
-		JLabel info = new JLabel();
+		info = new JLabel();
 		window.getContentPane().add(BorderLayout.CENTER, ramka);
 		window.getContentPane().add(BorderLayout.NORTH, info);
 		
 		ramka.setLayout(new GridLayout(7,7));
 		
-		JButton drop0 = new JButton("|"); drop0.addActionListener(new DropActionListener(0)); 
-		JButton drop1 = new JButton("|"); drop1.addActionListener(new DropActionListener(1)); 
-		JButton drop2 = new JButton("|"); drop2.addActionListener(new DropActionListener(2));
-		JButton drop3 = new JButton("|"); drop3.addActionListener(new DropActionListener(3));
-		JButton drop4 = new JButton("|"); drop4.addActionListener(new DropActionListener(4));
-		JButton drop5 = new JButton("|"); drop5.addActionListener(new DropActionListener(5));
-		JButton drop6 = new JButton("|"); drop6.addActionListener(new DropActionListener(6));
-		
-		ramka.add(drop0);
-		ramka.add(drop1);
-		ramka.add(drop2);
-		ramka.add(drop3);
-		ramka.add(drop4);
-		ramka.add(drop5);
-		ramka.add(drop6);
+		for (int i=0; i<dropButtons.length; i++) {
+			dropButtons[i] = new JButton(String.valueOf(i+1)); 
+			dropButtons[i].addActionListener(new DropActionListener(i)); 
+			ramka.add(dropButtons[i]);
+		}
 		
 		for (int row = 0; row < board.getHeight(); row++) {
 			for (int col = 0; col < board.getWidth(); col++) {
@@ -59,15 +50,34 @@ public class GUI {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setTitle("Connect4");
 		info.setText("hello");
-		info.setSize(100,550);
-		ramka.setSize(550,550);
-		window.setSize(650,550);
+		info.setMinimumSize(new Dimension(500,50));
+		ramka.setSize(500,500);
+		window.setSize(500,550);
 		
 		window.setVisible(true);
 		
-		game.play(ai2);
+	}
+	private void startPlay() {
+
+//		ComputerPlayer ai2=new MinMaxPlayer(game.getBoard(),1, 1);
+		ComputerPlayer ai2=new RandomPlayer(game.getBoard());
+
+		
+		game.play(ai2, this);
 	}
 
+	public void setInfo(String text) {
+		info.setText(text);
+	}
+	public void refresh() {
+		window.repaint();
+	}
+	public void setButtonsEnabled(boolean enabled) {
+		for (int i=0; i<dropButtons.length; i++) {
+			dropButtons[i].setEnabled(enabled);
+		}
+	}
+	
 	class Gap extends JPanel{
 
 		int col, row;
@@ -103,8 +113,14 @@ public class GUI {
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			board.drop(player, column);
-			window.repaint();
+			if(board.drop(Board.PLAYERS[player], column)) {
+				game.setDroppedTrue();
+				window.repaint();
+			}
+			else {
+				info.setText("Column " + (column+1) + " is full.");
+			}
+			
 		}
 	}//DropActionListener
 }

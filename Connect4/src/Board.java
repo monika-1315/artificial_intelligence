@@ -126,7 +126,7 @@ public class Board {
 
 	boolean drop(char symbol, int col) {
 		if (!(0 <= col && col < width)) {
-			System.out.println("Column must be between 0 and " + (width - 1));
+//			System.out.println("Column must be between 0 and " + (width - 1));
 			return false;
 		}
 
@@ -137,9 +137,10 @@ public class Board {
 			}
 		}
 		// column is full
-		System.out.println("Column " + col + " is full.");
+//		System.out.println("Column " + col + " is full.");
 		return false;
 	}
+	
 
 	public Board clone() {
 		Board copy = new Board(width, height);
