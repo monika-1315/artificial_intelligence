@@ -3,6 +3,7 @@ import java.util.Arrays;
 public class Board {
 
 	static final char[] PLAYERS = { 'O', 'X' };
+	static final String[] PLAYERS_COL = { "yellow", "red" };
 	
 	public static char[] getPlayers() {
 		return PLAYERS;
@@ -94,7 +95,9 @@ public class Board {
 	public static boolean contains(String str, String substring) {
 		return str.indexOf(substring) >= 0;
 	}
-	public boolean isFull() {
+	public boolean isGameOver() {
+		if (isWinningPlay())
+			return true;
 		for (int row=0; row<height; row++) {
 			for (int col=0; col<width; col++) {
 				if(grid[row][col]=='.')

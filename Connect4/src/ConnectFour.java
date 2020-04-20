@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class ConnectFour {
 
-	private volatile Board board;
+	private Board board;
 	private volatile boolean isDropped;
 
 	public ConnectFour(int w, int h) {
@@ -81,23 +81,22 @@ public class ConnectFour {
 					gui.refresh();
 				}
 			}
-//			System.out.println(this.toString());
+			System.out.println(this.toString());
 
 			if (board.isWinningPlay()) {
-				gui.onWin(player);
+				gui.onWin("Player "+Board.PLAYERS_COL[player]);
 				return;
 			}
 		}
 
-		gui.setInfo("Game over. No winner. Try again!");
-		gui.setButtonsEnabled(false);
+		gui.onWin("Nobody");
 	}
 
 	private void chooseAndDropGUI(int player, GUI gui) {
 		gui.setPlayer(player);
 		gui.setButtonsEnabled(true);
 		isDropped = false;
-		gui.setInfo("\nPlayer " + (player+1) + " turn: ");
+		gui.setInfo("\nPlayer " + Board.PLAYERS_COL[player] + " turn: ");
 		do {
 		} while (!isDropped);
 		gui.setButtonsEnabled(false);

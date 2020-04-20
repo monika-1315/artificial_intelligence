@@ -5,6 +5,13 @@ public class MinMaxPlayer extends ComputerPlayer {
 	private int wonPoints = 100;
 	private int maxDepth;
 
+	public MinMaxPlayer(Board game, int playerNumber, int maxDepth, int wonPoints) {
+		super(game);
+		this.playerNum = playerNumber;
+		this.maxDepth = maxDepth;
+		this.wonPoints = wonPoints;
+	}
+
 	public MinMaxPlayer(Board game, int playerNumber, int maxDepth) {
 		super(game);
 		this.playerNum = playerNumber;
@@ -24,58 +31,54 @@ public class MinMaxPlayer extends ComputerPlayer {
 		int bestVal = Integer.MIN_VALUE;
 		int bestMove = -1;
 
-		if (playerNum == 0) {
-			for (int i = 0; i < game.getWidth(); i++) {
-				if (!game.isColumnFull(i)) {
-					Board newBoard = (Board) game.clone();
-					newBoard.drop(Board.PLAYERS[playerNum], i);
+		for (int i = 0; i < game.getWidth(); i++) {
+			if (!game.isColumnFull(i)) {
+				Board newBoard = (Board) game.clone();
+				newBoard.drop(Board.PLAYERS[playerNum], i);
 
-					int moveVal = minmax(newBoard, 0, false);
+				int moveVal;
+//				if (playerNum == 1) {
+					moveVal = minmax(newBoard, 0, false);
+//					bestVal = Integer.MIN_VALUE;
 					if (moveVal > bestVal) {
 						bestMove = i;
 						bestVal = moveVal;
 					}
-				}
+//				} else {
+//					moveVal = minmax(newBoard, 0, true);
+//					 bestVal = Integer.MAX_VALUE;
+//					if (moveVal < bestVal) {
+//						bestMove = i;
+//						bestVal = moveVal;
+//					}
+//				}
 			}
-		} else {
-			for (int i = game.getWidth()-1; i >0; i--) {
-				if (!game.isColumnFull(i)) {
-					Board newBoard = (Board) game.clone();
-					newBoard.drop(Board.PLAYERS[playerNum], i);
 
-					int moveVal = minmax(newBoard, 0, false);
-					if (moveVal > bestVal) {
-						bestMove = i;
-						bestVal = moveVal;
-					}
-				}
-			}
 		}
+//		if (bestVal==0) {
+//			int move;
+//			do {
+//				move = (int)(Math.random() * game.getWidth());
+//			} while (game.isColumnFull(move));
+//			return move;
+//		}
 		return bestMove;
 	}
 
-	private int evaluate(Board board) {
+	private int evaluate(Board board, int depth) {
 		if (board.isWinningPlay()) {
-			if (board.getLastPlayerSymbol() == Board.PLAYERS[playerNum])
-				return wonPoints;
+//			if (board.getLastPlayerSymbol() == Board.PLAYERS[1])
+			if (board.getLastPlayerSymbol() == Board.PLAYERS[playerNum])	
+				return wonPoints - depth;
 			else
-				return -wonPoints;
+				return -wonPoints + depth;
 		}
 		return 0;
 	}
 
 	private int minmax(Board board, int depth, Boolean isMax) {
-		if (depth > maxDepth)
-			return 0;
-		int score = evaluate(board);
-
-		if (score == wonPoints)
-			return score - depth;
-		if (score == -wonPoints)
-			return score + depth;
-
-		if (board.isFull())
-			return 0;
+		if (depth >= maxDepth || board.isGameOver())// >
+			return evaluate(board, depth);
 
 		if (isMax) {
 			int best = Integer.MIN_VALUE;

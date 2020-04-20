@@ -23,8 +23,9 @@ public class GUI {
 
 	private static final String[] playersOptions = new String[] { "Human Player", "Random - Computer Player",
 			"MinMax Computer Player" };
+	private static final String[] evalOptions = new String[] { "Simple (points for win)" };
 	private ConnectFour game;
-	private Board board;
+	private volatile Board board;
 	private int player = 0;
 	private JFrame window = new JFrame();
 	private JLabel info;
@@ -35,47 +36,44 @@ public class GUI {
 		game = new ConnectFour();
 		board = game.getBoard();
 		dropButtons = new JButton[board.getWidth()];
-		createWindow();
-		startPlay();
 	}
 
 	private void createWindow() {
 
-		JPanel ramka = new JPanel();
+		JPanel panel = new JPanel();
 		info = new JLabel();
-		window.getContentPane().add(BorderLayout.CENTER, ramka);
+		window.getContentPane().add(BorderLayout.CENTER, panel);
 		window.getContentPane().add(BorderLayout.NORTH, info);
 
-		ramka.setLayout(new GridLayout(7, 7));
+		panel.setLayout(new GridLayout(7, 7));
 
 		for (int i = 0; i < dropButtons.length; i++) {
 			dropButtons[i] = new JButton(String.valueOf(i + 1));
 			dropButtons[i].addActionListener(new DropActionListener(i));
-			ramka.add(dropButtons[i]);
+			panel.add(dropButtons[i]);
 		}
 		setButtonsEnabled(false);
 
 		for (int row = 0; row < board.getHeight(); row++) {
 			for (int col = 0; col < board.getWidth(); col++) {
-				ramka.add(new Gap(row, col));
+				panel.add(new Gap(row, col));
 			}
 		}
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setTitle("Connect4");
 		info.setText("hello");
 		info.setMinimumSize(new Dimension(500, 50));
-		ramka.setSize(500, 500);
+		panel.setSize(500, 500);
 
 		window.setSize(500, 550);
 
 	}
 
-	private void startPlay() {
-//
-//		ComputerPlayer ai1=new MinMaxPlayer(game.getBoard(),0, 6);
-//		ComputerPlayer ai2=new MinMaxPlayer(game.getBoard(),1, 5);
-//		ComputerPlayer ai2=new RandomPlayer(game.getBoard());
-
+	public void play() {
+		createWindow();
+		startPlay();
+	}
+	void startPlay() {
 		ComputerPlayer ai1 = getPlayer(0);
 		ComputerPlayer ai2 = getPlayer(1);
 
@@ -125,13 +123,18 @@ public class GUI {
 		SpinnerModel model = new SpinnerNumberModel(5, 1, 40, 1);
 		JSpinner spinner = new JSpinner(model);
 		dialog.add(spinner);
+		dialog.add(new JLabel("Select evaluation method:"));
+		
+		JComboBox<String>evalList = new JComboBox<>(evalOptions);
+		dialog.add(evalList);
+		
 		JButton button = new JButton("Select");
 		button.addActionListener(new ButtonSelectedListener());
 		dialog.add(button);
 
 		dialog.setTitle("Select player");
 		dialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		dialog.setSize(200, 100);
+		dialog.setSize(200, 170);
 		dialog.setVisible(true);
 		waitForUser = true;
 		do {
@@ -142,27 +145,27 @@ public class GUI {
 		return new MinMaxPlayer(board, i, depth);
 	}
 
-	public void setInfo(String text) {
+	void setInfo(String text) {
 		info.setText(text);
 	}
 
-	public void refresh() {
+	void refresh() {
 		window.repaint();
 	}
 
-	public void setButtonsEnabled(boolean enabled) {
+	void setButtonsEnabled(boolean enabled) {
 		for (int i = 0; i < dropButtons.length; i++) {
 			dropButtons[i].setEnabled(enabled);
 		}
 	}
 
-	public void setPlayer(int player) {
+	void setPlayer(int player) {
 		this.player = player;
 	}
 
-	public void onWin(int player) {
-		info.setText("Player " + (player + 1) + " won!");
-		int a = JOptionPane.showConfirmDialog(window, "Player " + (player + 1) + " won!\n Do you want to play again?",
+	void onWin(String player) {
+		info.setText("Player " + player + " won!");
+		int a = JOptionPane.showConfirmDialog(window,  player + " won!\n Do you want to play again?",
 				"Game over", JOptionPane.YES_NO_OPTION);
 		if (a == JOptionPane.YES_OPTION) {
 			game.clearBoard();
