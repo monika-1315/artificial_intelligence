@@ -8,30 +8,46 @@ public class MinMaxPlayer extends ComputerPlayer {
 	public MinMaxPlayer(Board game, int playerNumber, int maxDepth) {
 		super(game);
 		this.playerNum = playerNumber;
-		this.maxDepth=maxDepth;
-		this.wonPoints=maxDepth * 2;
+		this.maxDepth = maxDepth;
+		this.wonPoints = maxDepth * 2;
 	}
-	
+
 	public MinMaxPlayer(Board game) {
 		super(game);
 		this.playerNum = 1;
-		this.maxDepth=7;
+		this.maxDepth = 5;
+		this.wonPoints = maxDepth * 2;
 	}
 
 	@Override
-	public int nextMove()  {
+	public int nextMove() {
 		int bestVal = Integer.MIN_VALUE;
 		int bestMove = -1;
 
-		for (int i = 0; i < game.getWidth(); i++) {
-			if (!game.isColumnFull(i)) {
-				Board newBoard = (Board) game.clone();
-				newBoard.drop(Board.PLAYERS[playerNum], i);
+		if (playerNum == 0) {
+			for (int i = 0; i < game.getWidth(); i++) {
+				if (!game.isColumnFull(i)) {
+					Board newBoard = (Board) game.clone();
+					newBoard.drop(Board.PLAYERS[playerNum], i);
 
-				int moveVal = minmax(newBoard, 0, false);
-				if (moveVal > bestVal) {
-					bestMove = i;
-					bestVal = moveVal;
+					int moveVal = minmax(newBoard, 0, false);
+					if (moveVal > bestVal) {
+						bestMove = i;
+						bestVal = moveVal;
+					}
+				}
+			}
+		} else {
+			for (int i = game.getWidth()-1; i >0; i--) {
+				if (!game.isColumnFull(i)) {
+					Board newBoard = (Board) game.clone();
+					newBoard.drop(Board.PLAYERS[playerNum], i);
+
+					int moveVal = minmax(newBoard, 0, false);
+					if (moveVal > bestVal) {
+						bestMove = i;
+						bestVal = moveVal;
+					}
 				}
 			}
 		}
@@ -49,14 +65,14 @@ public class MinMaxPlayer extends ComputerPlayer {
 	}
 
 	private int minmax(Board board, int depth, Boolean isMax) {
-		if (depth>maxDepth)
+		if (depth > maxDepth)
 			return 0;
 		int score = evaluate(board);
 
 		if (score == wonPoints)
-			return score-depth;
+			return score - depth;
 		if (score == -wonPoints)
-			return score+depth;
+			return score + depth;
 
 		if (board.isFull())
 			return 0;

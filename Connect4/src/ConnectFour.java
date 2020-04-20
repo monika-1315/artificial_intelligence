@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class ConnectFour {
 
-	private Board board;
+	private volatile Board board;
 	private volatile boolean isDropped;
 
 	public ConnectFour(int w, int h) {
@@ -62,7 +62,6 @@ public class ConnectFour {
 
 			if (player == 0)
 				if (ai1 == null) {
-					gui.setButtonsEnabled(true);
 					chooseAndDropGUI(player, gui);
 				} else {
 					gui.setInfo("Computer " + (player + 1) + " is thinking...");
@@ -71,7 +70,7 @@ public class ConnectFour {
 				}
 			else {
 				if (ai2 == null) {
-					gui.setButtonsEnabled(true);
+					
 					chooseAndDropGUI(player, gui);
 				} else {
 					gui.setInfo("Computer " + (player + 1) + " is thinking...");
@@ -79,10 +78,10 @@ public class ConnectFour {
 					gui.refresh();
 				}
 			}
-			System.out.println(this.toString());
+//			System.out.println(this.toString());
 
 			if (board.isWinningPlay()) {
-				gui.setInfo("\nPlayer " + symbol + " wins!");
+				gui.setInfo("\nPlayer " + (player+1)+ " wins!");
 				return;
 			}
 		}
@@ -92,8 +91,10 @@ public class ConnectFour {
 	}
 
 	private void chooseAndDropGUI(int player, GUI gui) {
+		gui.setPlayer(player);
+		gui.setButtonsEnabled(true);
 		isDropped = false;
-		gui.setInfo("\nPlayer " + player + " turn: ");
+		gui.setInfo("\nPlayer " + (player+1) + " turn: ");
 		do {
 		} while (!isDropped);
 		gui.setButtonsEnabled(false);

@@ -1,7 +1,7 @@
 
 public abstract class ComputerPlayer {
 
-	Board game;
+	volatile Board game;
 
 	public ComputerPlayer(Board game) {
 		super();

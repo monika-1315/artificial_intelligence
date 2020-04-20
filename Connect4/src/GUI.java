@@ -6,7 +6,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,12 +16,14 @@ import javax.swing.JTextArea;
 
 public class GUI {
 
+	private static final String[] playersOptions = new String[] {"Human Player", "Random - Computer Player", "MinMax Computer Player"};
 	private ConnectFour game;
 	private Board board;
 	private int player= 0;
 	private JFrame window = new JFrame();
 	private JLabel info;
-	JButton[] dropButtons;// drop0, drop1, drop2, drop3, drop4, drop5, drop6;
+	private JButton[] dropButtons;// drop0, drop1, drop2, drop3, drop4, drop5, drop6;
+	private volatile boolean waitForUser=false;
 	public GUI() {
 		game = new ConnectFour();
 		board=game.getBoard();
@@ -41,6 +45,7 @@ public class GUI {
 			dropButtons[i].addActionListener(new DropActionListener(i)); 
 			ramka.add(dropButtons[i]);
 		}
+		setButtonsEnabled(false);
 		
 		for (int row = 0; row < board.getHeight(); row++) {
 			for (int col = 0; col < board.getWidth(); col++) {
@@ -52,20 +57,45 @@ public class GUI {
 		info.setText("hello");
 		info.setMinimumSize(new Dimension(500,50));
 		ramka.setSize(500,500);
+
 		window.setSize(500,550);
-		
-		window.setVisible(true);
 		
 	}
 	private void startPlay() {
+//
+//		ComputerPlayer ai1=new MinMaxPlayer(game.getBoard(),0, 6);
+//		ComputerPlayer ai2=new MinMaxPlayer(game.getBoard(),1, 5);
+//		ComputerPlayer ai2=new RandomPlayer(game.getBoard());
 
-//		ComputerPlayer ai2=new MinMaxPlayer(game.getBoard(),1, 1);
-		ComputerPlayer ai2=new RandomPlayer(game.getBoard());
-
+		ComputerPlayer ai1=getPlayer(0);
+		ComputerPlayer ai2=getPlayer(1);
 		
-		game.play(ai2, this);
+
+		window.setVisible(true);
+		game.play(ai1, ai2, this);
 	}
 
+	private ComputerPlayer getPlayer(int i) {
+		JFrame dialog= new JFrame();
+		JPanel panel=new JPanel();
+		dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
+		dialog.add(new JLabel("Select player "+(i+1)));
+		
+		JComboBox<String> playersList = new JComboBox<>(playersOptions);
+		dialog.add(playersList);
+		JButton button = new JButton("Select");
+		button.addActionListener(new ButtonSelectedListener());
+		dialog.add(button);
+		
+//		dialog.pack();
+		dialog.setSize(200, 100);
+		dialog.setVisible(true);
+		waitForUser=true;
+		do {} while(waitForUser);
+		
+		dialog.setVisible(false);
+		return null;
+	}
 	public void setInfo(String text) {
 		info.setText(text);
 	}
@@ -78,6 +108,9 @@ public class GUI {
 		}
 	}
 	
+	public void setPlayer(int player) {
+		this.player=player;
+	}
 	class Gap extends JPanel{
 
 		int col, row;
@@ -92,7 +125,7 @@ public class GUI {
 
 		@Override
 		public void paintComponent(Graphics g) {
-			g.setColor(Color.BLACK);
+			g.setColor(Color.DARK_GRAY);
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 			if (board.getGrid()[row][col]=='.') {
 				g.setColor(Color.WHITE);
@@ -116,6 +149,7 @@ public class GUI {
 			if(board.drop(Board.PLAYERS[player], column)) {
 				game.setDroppedTrue();
 				window.repaint();
+//				setButtonsEnabled(false);
 			}
 			else {
 				info.setText("Column " + (column+1) + " is full.");
@@ -123,4 +157,13 @@ public class GUI {
 			
 		}
 	}//DropActionListener
+	
+	class ButtonSelectedListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			waitForUser=false;
+		}
+		
+	}
 }
