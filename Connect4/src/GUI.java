@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -19,84 +21,90 @@ import javax.swing.SpinnerNumberModel;
 
 public class GUI {
 
-	private static final String[] playersOptions = new String[] {"Human Player", "Random - Computer Player", "MinMax Computer Player"};
+	private static final String[] playersOptions = new String[] { "Human Player", "Random - Computer Player",
+			"MinMax Computer Player" };
 	private ConnectFour game;
 	private Board board;
-	private int player= 0;
+	private int player = 0;
 	private JFrame window = new JFrame();
 	private JLabel info;
 	private JButton[] dropButtons;// drop0, drop1, drop2, drop3, drop4, drop5, drop6;
-	private volatile boolean waitForUser=false;
+	private volatile boolean waitForUser = false;
+
 	public GUI() {
 		game = new ConnectFour();
-		board=game.getBoard();
+		board = game.getBoard();
 		dropButtons = new JButton[board.getWidth()];
 		createWindow();
 		startPlay();
 	}
+
 	private void createWindow() {
 
 		JPanel ramka = new JPanel();
 		info = new JLabel();
 		window.getContentPane().add(BorderLayout.CENTER, ramka);
 		window.getContentPane().add(BorderLayout.NORTH, info);
-		
-		ramka.setLayout(new GridLayout(7,7));
-		
-		for (int i=0; i<dropButtons.length; i++) {
-			dropButtons[i] = new JButton(String.valueOf(i+1)); 
-			dropButtons[i].addActionListener(new DropActionListener(i)); 
+
+		ramka.setLayout(new GridLayout(7, 7));
+
+		for (int i = 0; i < dropButtons.length; i++) {
+			dropButtons[i] = new JButton(String.valueOf(i + 1));
+			dropButtons[i].addActionListener(new DropActionListener(i));
 			ramka.add(dropButtons[i]);
 		}
 		setButtonsEnabled(false);
-		
+
 		for (int row = 0; row < board.getHeight(); row++) {
 			for (int col = 0; col < board.getWidth(); col++) {
-				ramka.add(new Gap(row,col));
+				ramka.add(new Gap(row, col));
 			}
-		}	
+		}
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setTitle("Connect4");
 		info.setText("hello");
-		info.setMinimumSize(new Dimension(500,50));
-		ramka.setSize(500,500);
+		info.setMinimumSize(new Dimension(500, 50));
+		ramka.setSize(500, 500);
 
-		window.setSize(500,550);
-		
+		window.setSize(500, 550);
+
 	}
+
 	private void startPlay() {
 //
 //		ComputerPlayer ai1=new MinMaxPlayer(game.getBoard(),0, 6);
 //		ComputerPlayer ai2=new MinMaxPlayer(game.getBoard(),1, 5);
 //		ComputerPlayer ai2=new RandomPlayer(game.getBoard());
 
-		ComputerPlayer ai1=getPlayer(0);
-		ComputerPlayer ai2=getPlayer(1);
-		
+		ComputerPlayer ai1 = getPlayer(0);
+		ComputerPlayer ai2 = getPlayer(1);
 
 		window.setVisible(true);
 		game.play(ai1, ai2, this);
 	}
 
 	private ComputerPlayer getPlayer(int i) {
-		JFrame dialog= new JFrame();
-		JPanel panel=new JPanel();
-		dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
-		dialog.add(new JLabel("Select player "+(i+1)));
-		
+		JFrame dialog = new JFrame();
+		JPanel panel = new JPanel();
+//		dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
+		dialog.setLayout(new FlowLayout());
+		dialog.add(new JLabel("Select player " + (i + 1)));
+
 		JComboBox<String> playersList = new JComboBox<>(playersOptions);
-		playersList.setForeground(Color.BLUE);
 		dialog.add(playersList);
 		JButton button = new JButton("Select");
 		button.addActionListener(new ButtonSelectedListener());
 		dialog.add(button);
-		
+
+		dialog.setTitle("Select player");
+		dialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		dialog.pack();
-		dialog.setSize(200, 110);
+		dialog.setSize(200, 130);
 		dialog.setVisible(true);
-		waitForUser=true;
-		do {} while(waitForUser);
-		
+		waitForUser = true;
+		do {
+		} while (waitForUser);
+
 		dialog.setVisible(false);
 		switch (playersList.getSelectedIndex()) {
 		case (1):
@@ -107,96 +115,119 @@ public class GUI {
 			return null;
 		}
 	}
+
 	private MinMaxPlayer getMinMaxPlayer(int i) {
-		JFrame dialog= new JFrame();
-		JPanel panel=new JPanel();
-		dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
+		JFrame dialog = new JFrame();
+		JPanel panel = new JPanel();
+		dialog.setLayout(new FlowLayout());
 		dialog.add(new JLabel("Select minmax max depth:"));
-		
-		SpinnerModel model = new SpinnerNumberModel(5, 1, 40,1); 
+
+		SpinnerModel model = new SpinnerNumberModel(5, 1, 40, 1);
 		JSpinner spinner = new JSpinner(model);
 		dialog.add(spinner);
 		JButton button = new JButton("Select");
 		button.addActionListener(new ButtonSelectedListener());
 		dialog.add(button);
-		
-		dialog.setSize(200, 110);
+
+		dialog.setTitle("Select player");
+		dialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		dialog.setSize(200, 100);
 		dialog.setVisible(true);
-		waitForUser=true;
-		do {} while(waitForUser);
-		
+		waitForUser = true;
+		do {
+		} while (waitForUser);
+
 		dialog.setVisible(false);
-		int depth=(int) spinner.getValue();
+		int depth = (int) spinner.getValue();
 		return new MinMaxPlayer(board, i, depth);
 	}
+
 	public void setInfo(String text) {
 		info.setText(text);
 	}
+
 	public void refresh() {
 		window.repaint();
 	}
+
 	public void setButtonsEnabled(boolean enabled) {
-		for (int i=0; i<dropButtons.length; i++) {
+		for (int i = 0; i < dropButtons.length; i++) {
 			dropButtons[i].setEnabled(enabled);
 		}
 	}
-	
+
 	public void setPlayer(int player) {
-		this.player=player;
+		this.player = player;
 	}
-	class Gap extends JPanel{
+
+	public void onWin(int player) {
+		info.setText("Player " + (player + 1) + " won!");
+		int a = JOptionPane.showConfirmDialog(window, "Player " + (player + 1) + " won!\n Do you want to play again?",
+				"Game over", JOptionPane.YES_NO_OPTION);
+		if (a == JOptionPane.YES_OPTION) {
+			game.clearBoard();
+			board = game.getBoard();
+			refresh();
+			startPlay();
+		} else {
+			window.setVisible(false);
+			System.exit(0);
+		}
+	}
+
+	class Gap extends JPanel {
 
 		int col, row;
-		
-		
+
 		public Gap(int row, int col) {
 			super();
 			this.col = col;
 			this.row = row;
 		}
 
-
 		@Override
 		public void paintComponent(Graphics g) {
 			g.setColor(Color.DARK_GRAY);
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
-			if (board.getGrid()[row][col]=='.') {
+			if (board.getGrid()[row][col] == '.') {
 				g.setColor(Color.WHITE);
-			} else if (board.getGrid()[row][col]==Board.PLAYERS[0]) {
+			} else if (board.getGrid()[row][col] == Board.PLAYERS[0]) {
 				g.setColor(Color.YELLOW);
 			} else {
 				g.setColor(Color.RED);
 			}
 			g.fillOval(0, 0, this.getWidth(), this.getHeight());
 		}
-		
+
 	}
-	class DropActionListener implements ActionListener{
+
+	class DropActionListener implements ActionListener {
 		private int column;
+
 		public DropActionListener(int column) {
 			super();
 			this.column = column;
 		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(board.drop(Board.PLAYERS[player], column)) {
+			if (board.drop(Board.PLAYERS[player], column)) {
 				game.setDroppedTrue();
 				window.repaint();
 //				setButtonsEnabled(false);
+			} else {
+				info.setText("Column " + (column + 1) + " is full.");
 			}
-			else {
-				info.setText("Column " + (column+1) + " is full.");
-			}
-			
+
 		}
-	}//DropActionListener
-	
-	class ButtonSelectedListener implements ActionListener{
+	}// DropActionListener
+
+	class ButtonSelectedListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			waitForUser=false;
+			waitForUser = false;
 		}
-		
+
 	}
 }

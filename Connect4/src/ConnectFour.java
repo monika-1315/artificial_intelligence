@@ -12,6 +12,9 @@ public class ConnectFour {
 	public ConnectFour() {
 		board = new Board(7, 6);
 	}
+	public void clearBoard() {
+		board = new Board(7, 6);
+	}
 
 	@Override
 	public String toString() {
@@ -81,7 +84,7 @@ public class ConnectFour {
 //			System.out.println(this.toString());
 
 			if (board.isWinningPlay()) {
-				gui.setInfo("\nPlayer " + (player+1)+ " wins!");
+				gui.onWin(player);
 				return;
 			}
 		}
