@@ -1,33 +1,32 @@
 
 public class AlphaBetaPlayer extends ComputerPlayer {
 
-	int playerNum;
+	
 	private int wonPoints = 100;
 	private int maxDepth;
 
 	public AlphaBetaPlayer(Board game, int playerNumber, int maxDepth, int wonPoints) {
-		super(game);
-		this.playerNum = playerNumber;
+		super(game,playerNumber);
 		this.maxDepth = maxDepth;
 		this.wonPoints = wonPoints;
 	}
 
 	public AlphaBetaPlayer(Board game, int playerNumber, int maxDepth) {
-		super(game);
-		this.playerNum = playerNumber;
+		super(game,playerNumber);
 		this.maxDepth = maxDepth;
 		this.wonPoints = maxDepth * 2;
 	}
 
 	public AlphaBetaPlayer(Board game) {
-		super(game);
-		this.playerNum = 1;
+		super(game, 1);
 		this.maxDepth = 5;
 		this.wonPoints = maxDepth * 2;
 	}
 
 	@Override
 	public int nextMove() {
+		long t0=System.currentTimeMillis();
+		movesCounter++;
 		int bestVal;
 		int bestMove = -1;
 		if (playerNum == 1) {
@@ -59,13 +58,12 @@ public class AlphaBetaPlayer extends ComputerPlayer {
 			}			
 		}
 //		if(bestVal==0 && bestMove==0) {
-//			int move;
 //			do {
-//				move = (int)(Math.random() * game.getWidth());
-////				System.out.println(move);
-//			} while (game.isColumnFull(move));
-//			return move;
+//				bestMove = (int)(Math.random() * game.getWidth());
+//			} while (game.isColumnFull(bestMove));
 //		}
+		long t1=System.currentTimeMillis();
+		this.thinkingTimeSum+=(t1-t0);
 		return bestMove;
 	}
 

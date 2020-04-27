@@ -58,7 +58,8 @@ public class ConnectFour {
 	public void play(ComputerPlayer ai1, ComputerPlayer ai2, GUI gui) {
 
 //		System.out.println(this.toString());
-		board.drop(Board.PLAYERS[0], (int)(Math.random() * board.getWidth()));
+		int first=(int)(Math.random() * board.getWidth());
+		board.drop(Board.PLAYERS[0], first);
 		int moves = board.getHeight() * board.getWidth()-1;
 
 		for (int player = 1; moves-- > 0; player = 1 - player) {
@@ -85,11 +86,19 @@ public class ConnectFour {
 			System.out.println(this.toString());
 
 			if (board.isWinningPlay()) {
+
+				System.out.println("First move: "+(first+1));
+				System.out.println("Won player "+player);
+				if(player==0) 
+					System.out.println(ai1.getResearch());
+				else
+					System.out.println(ai2.getResearch());
 				gui.onWin("Player "+Board.PLAYERS_COL[player]);
 				return;
 			}
 		}
-
+		System.out.println("First move: "+(first+1));
+		System.out.println("Remis");
 		gui.onWin("Nobody");
 	}
 

@@ -106,7 +106,7 @@ public class GUI {
 		dialog.setVisible(false);
 		switch (playersList.getSelectedIndex()) {
 		case (1):
-			return new RandomPlayer(board);
+			return new RandomPlayer(board, i);
 		case (2):
 			return getMinMaxPlayer(i);
 		case (3):
