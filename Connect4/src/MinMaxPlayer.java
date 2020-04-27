@@ -47,25 +47,26 @@ public class MinMaxPlayer extends ComputerPlayer {
 						bestMove = i;
 						bestVal = moveVal;
 					}
-					System.out.println(moveVal+" "+bestVal);
+					System.out.println(moveVal + " " + bestVal);
 				} else {
 					moveVal = minmax(newBoard, 0, true);
 					if (moveVal < bestVal) {
 						bestMove = i;
 						bestVal = moveVal;
 					}
-					System.out.println(moveVal+" "+bestVal);
+					System.out.println(moveVal + " " + bestVal);
 				}
 			}
-			if(bestVal==0 && bestMove==0) {
-				int move;
-				do {
-					move = (int)(Math.random() * game.getWidth());
-//					System.out.println(move);
-				} while (game.isColumnFull(move));
-				return move;
-			}
 		}
+		if (bestVal == 0 && bestMove == 0) {
+			int move;
+			do {
+				move = (int) (Math.random() * game.getWidth());
+//					System.out.println(move);
+			} while (game.isColumnFull(move));
+			return move;
+		}
+
 		return bestMove;
 	}
 
@@ -74,7 +75,7 @@ public class MinMaxPlayer extends ComputerPlayer {
 			if (board.getLastPlayerSymbol() == Board.PLAYERS[1])
 //			if (board.getLastPlayerSymbol() == Board.PLAYERS[playerNum])	
 				return wonPoints - depth;
-			else 
+			else
 				return -wonPoints + depth;
 		}
 		return 0;
