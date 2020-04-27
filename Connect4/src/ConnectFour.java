@@ -58,9 +58,10 @@ public class ConnectFour {
 	public void play(ComputerPlayer ai1, ComputerPlayer ai2, GUI gui) {
 
 //		System.out.println(this.toString());
-		int moves = board.getHeight() * board.getWidth();
+		board.drop(Board.PLAYERS[0], (int)(Math.random() * board.getWidth()));
+		int moves = board.getHeight() * board.getWidth()-1;
 
-		for (int player = 0; moves-- > 0; player = 1 - player) {
+		for (int player = 1; moves-- > 0; player = 1 - player) {
 			char symbol = Board.PLAYERS[player];
 
 			if (player == 0)

@@ -58,14 +58,14 @@ public class MinMaxPlayer extends ComputerPlayer {
 				}
 			}
 		}
-		if (bestVal == 0 && bestMove == 0) {
-			int move;
-			do {
-				move = (int) (Math.random() * game.getWidth());
-//					System.out.println(move);
-			} while (game.isColumnFull(move));
-			return move;
-		}
+//		if (bestVal == 0 && bestMove == 0) {
+//			int move;
+//			do {
+//				move = (int) (Math.random() * game.getWidth());
+////					System.out.println(move);
+//			} while (game.isColumnFull(move));
+//			return move;
+//		}
 
 		return bestMove;
 	}
