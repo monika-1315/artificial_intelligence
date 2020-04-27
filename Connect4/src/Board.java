@@ -42,9 +42,11 @@ public class Board {
 			}
 			ret += "\n";
 		}
+		
 		for (int col = 0; col < width; col++) {
 			nums += col;
 		}
+		nums += "\n";
 
 		return ret + nums;
 	}
