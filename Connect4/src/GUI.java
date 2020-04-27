@@ -22,7 +22,7 @@ import javax.swing.SpinnerNumberModel;
 public class GUI {
 
 	private static final String[] playersOptions = new String[] { "Human Player", "Random - Computer Player",
-			"MinMax Computer Player" };
+			"MinMax Computer Player", "AlphaBeta Computer Player" };
 	private static final String[] evalOptions = new String[] { "Simple (points for win)" };
 	private ConnectFour game;
 	private volatile Board board;
@@ -109,16 +109,27 @@ public class GUI {
 			return new RandomPlayer(board);
 		case (2):
 			return getMinMaxPlayer(i);
+		case (3):
+			return getAlphaBetaPlayer(i);
 		default:
 			return null;
 		}
 	}
 
 	private MinMaxPlayer getMinMaxPlayer(int i) {
+		int depth=getDepth();
+		return new MinMaxPlayer(board, i, depth);
+	}
+	private AlphaBetaPlayer getAlphaBetaPlayer(int i) {
+		int depth=getDepth();
+		return new AlphaBetaPlayer(board, i, depth);
+	}
+
+	private int getDepth() {
 		JFrame dialog = new JFrame();
 		JPanel panel = new JPanel();
 		dialog.setLayout(new FlowLayout());
-		dialog.add(new JLabel("Select minmax max depth:"));
+		dialog.add(new JLabel("Select algorithm max depth:"));
 
 		SpinnerModel model = new SpinnerNumberModel(5, 1, 40, 1);
 		JSpinner spinner = new JSpinner(model);
@@ -141,10 +152,8 @@ public class GUI {
 		} while (waitForUser);
 
 		dialog.setVisible(false);
-		int depth = (int) spinner.getValue();
-		return new MinMaxPlayer(board, i, depth);
+		return (int) spinner.getValue();
 	}
-
 	void setInfo(String text) {
 		info.setText(text);
 	}
