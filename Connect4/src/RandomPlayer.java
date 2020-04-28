@@ -3,6 +3,7 @@ public class RandomPlayer extends ComputerPlayer {
 
 	public RandomPlayer(Board game, int playerNum) {
 		super(game, playerNum);
+		this.algorithmInfo="Random,";
 	}
 
 	@Override

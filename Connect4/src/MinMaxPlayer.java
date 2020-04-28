@@ -8,18 +8,15 @@ public class MinMaxPlayer extends ComputerPlayer {
 		super(game,playerNumber);
 		this.maxDepth = maxDepth;
 		this.wonPoints = wonPoints;
+		this.algorithmInfo="MinMax,"+maxDepth;
 	}
 
 	public MinMaxPlayer(Board game, int playerNumber, int maxDepth) {
-		super(game,playerNumber);
-		this.maxDepth = maxDepth;
-		this.wonPoints = maxDepth * 2;
+		this(game,playerNumber, maxDepth, maxDepth * 2);
 	}
 
 	public MinMaxPlayer(Board game) {
-		super(game,1);
-		this.maxDepth = 5;
-		this.wonPoints = maxDepth * 2;
+		this(game,1,5, 2);
 	}
 
 	@Override

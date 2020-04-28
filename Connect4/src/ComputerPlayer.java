@@ -5,6 +5,7 @@ public abstract class ComputerPlayer {
 	protected int playerNum;
 	protected int movesCounter=0;
 	protected long thinkingTimeSum=0;
+	protected String algorithmInfo;
 	
 	public ComputerPlayer(Board game, int playerNum) {
 		super();
@@ -18,6 +19,10 @@ public abstract class ComputerPlayer {
 		double avgTime = thinkingTimeSum/movesCounter;
 		if (playerNum==1)
 			return (movesCounter+1) + "\n" + avgTime;
-		return movesCounter + "\n" + avgTime;
+		return movesCounter + "," + avgTime;
+	}
+	
+	public String algInfo() {
+		return algorithmInfo + "," ;
 	}
 }

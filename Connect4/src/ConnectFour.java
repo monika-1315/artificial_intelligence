@@ -1,19 +1,39 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class ConnectFour {
 
 	private Board board;
 	private volatile boolean isDropped;
+	private BufferedWriter writer;
 
 	public ConnectFour(int w, int h) {
 		board = new Board(w, h);
+		try {
+			writer = new BufferedWriter(new FileWriter("Connect4.csv", true));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public ConnectFour() {
 		board = new Board(7, 6);
+		try {
+			writer = new BufferedWriter(new FileWriter("Connect4.csv", true));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+
 	public void clearBoard() {
 		board = new Board(7, 6);
+		try {
+			writer = new BufferedWriter(new FileWriter("Connect4.csv", true));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -56,15 +76,27 @@ public class ConnectFour {
 	}
 
 	public void play(ComputerPlayer ai1, ComputerPlayer ai2, GUI gui) {
-
+		if (ai1 != null && ai2 != null) {
+			try {
+				writer.append("\n" + ai1.algorithmInfo + "," + ai2.algorithmInfo + ",");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
 //		System.out.println(this.toString());
-		int first=(int)(Math.random() * board.getWidth());
-		board.drop(Board.PLAYERS[0], first);
-		int moves = board.getHeight() * board.getWidth()-1;
-
-		for (int player = 1; moves-- > 0; player = 1 - player) {
+		int moves = board.getHeight() * board.getWidth() ;
+		int moves0 = board.getHeight() * board.getWidth() ;
+		int first=-1;
+		for (int player = 0; moves-- > 0; player = 1 - player) {
 			char symbol = Board.PLAYERS[player];
 
+			if(ai1!=null && moves==moves0-1) {
+			first = (int) (Math.random() * board.getWidth());
+			board.drop(Board.PLAYERS[0], first);
+			continue;
+			}
+			
+			
 			if (player == 0)
 				if (ai1 == null) {
 					chooseAndDropGUI(player, gui);
@@ -75,7 +107,7 @@ public class ConnectFour {
 				}
 			else {
 				if (ai2 == null) {
-					
+
 					chooseAndDropGUI(player, gui);
 				} else {
 					gui.setInfo("Computer " + (player + 1) + " is thinking...");
@@ -87,17 +119,34 @@ public class ConnectFour {
 
 			if (board.isWinningPlay()) {
 
-				System.out.println("First move: "+(first+1));
-				System.out.println("Won player "+player);
-				if(player==0) 
-					System.out.println(ai1.getResearch());
-				else
-					System.out.println(ai2.getResearch());
-				gui.onWin("Player "+Board.PLAYERS_COL[player]);
+				System.out.println("First move: " + (first + 1));
+				System.out.println("Won player " + player);
+				try {
+					writer.append(first + "," + player + ",");
+
+					if (player == 0) {
+						System.out.println(ai1.getResearch());
+						writer.append(ai1.getResearch());
+					} else {
+						System.out.println(ai2.getResearch());
+						writer.append(ai1.getResearch());
+					}
+					writer.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
+				gui.onWin("Player " + Board.PLAYERS_COL[player]);
 				return;
 			}
 		}
-		System.out.println("First move: "+(first+1));
+		try {
+			writer.append(first + "," + -1 + ",");
+			writer.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println("First move: " + (first + 1));
 		System.out.println("Remis");
 		gui.onWin("Nobody");
 	}
@@ -149,6 +198,6 @@ public class ConnectFour {
 	}
 
 	public void setDroppedTrue() {
-		isDropped=true;
+		isDropped = true;
 	}
 }
