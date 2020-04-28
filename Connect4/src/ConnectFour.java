@@ -76,27 +76,35 @@ public class ConnectFour {
 	}
 
 	public void play(ComputerPlayer ai1, ComputerPlayer ai2, GUI gui) {
-		if (ai1 != null && ai2 != null) {
-			try {
-				writer.append("\n" + ai1.algorithmInfo + "," + ai2.algorithmInfo + ",");
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+
+		try {
+			writer.append("\n");
+			if (ai1 != null)
+				writer.append(ai1.algorithmInfo + ",");
+			else
+				writer.append("Human,,");
+			if (ai2 != null)
+				writer.append(ai2.algorithmInfo + ",");
+			else
+				writer.append("Human,,");
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
+
 //		System.out.println(this.toString());
-		int moves = board.getHeight() * board.getWidth() ;
-		int moves0 = board.getHeight() * board.getWidth() ;
-		int first=-1;
+		int moves = board.getHeight() * board.getWidth();
+		int moves0 = board.getHeight() * board.getWidth();
+		int first = -1;
 		for (int player = 0; moves-- > 0; player = 1 - player) {
 			char symbol = Board.PLAYERS[player];
 
-			if(ai1!=null && moves==moves0-1) {
-			first = (int) (Math.random() * board.getWidth());
-			board.drop(Board.PLAYERS[0], first);
-			continue;
+			if (ai1 != null && moves == moves0 - 1) {
+				first = (int) (Math.random() * board.getWidth());
+				board.drop(Board.PLAYERS[0], first);
+				gui.refresh();
+				continue;
 			}
-			
-			
+
 			if (player == 0)
 				if (ai1 == null) {
 					chooseAndDropGUI(player, gui);
@@ -124,12 +132,12 @@ public class ConnectFour {
 				try {
 					writer.append(first + "," + player + ",");
 
-					if (player == 0) {
+					if (player == 0 && ai1 != null) {
 						System.out.println(ai1.getResearch());
 						writer.append(ai1.getResearch());
-					} else {
+					} else if (player == 1 && ai2 != null) {
 						System.out.println(ai2.getResearch());
-						writer.append(ai1.getResearch());
+						writer.append(ai2.getResearch());
 					}
 					writer.close();
 				} catch (IOException e1) {
@@ -195,6 +203,74 @@ public class ConnectFour {
 
 			System.out.println("Game over. No winner. Try again!");
 		}
+	}
+
+	public void play(ComputerPlayer ai1, ComputerPlayer ai2) {
+
+		try {
+			writer.append("\n");
+
+			writer.append(ai1.algorithmInfo + ",");
+			System.out.println(ai1.algorithmInfo);
+
+			writer.append(ai2.algorithmInfo + ",");
+			System.out.println(ai2.algorithmInfo);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+//	System.out.println(this.toString());
+		int moves = board.getHeight() * board.getWidth();
+		int moves0 = board.getHeight() * board.getWidth();
+		int first = -1;
+		for (int player = 0; moves-- > 0; player = 1 - player) {
+			char symbol = Board.PLAYERS[player];
+
+			if (ai1 != null && moves == moves0 - 1) {
+				first = (int) (Math.random() * board.getWidth());
+				board.drop(Board.PLAYERS[0], first);
+				continue;
+			}
+
+			if (player == 0) {
+				System.out.println("Computer " + (player + 1) + " is thinking...");
+				board.drop(symbol, ai1.nextMove());
+			} else {
+				System.out.println("Computer " + (player + 1) + " is thinking...");
+				board.drop(symbol, ai2.nextMove());
+			}
+
+			System.out.println(this.toString());
+
+			if (board.isWinningPlay()) {
+
+				System.out.println("First move: " + (first + 1));
+				System.out.println("Won player " + player);
+				try {
+					writer.append(first + "," + player + ",");
+
+					if (player == 0 && ai1 != null) {
+						System.out.println(ai1.getResearch());
+						writer.append(ai1.getResearch());
+					} else if (player == 1 && ai2 != null) {
+						System.out.println(ai2.getResearch());
+						writer.append(ai2.getResearch());
+					}
+					writer.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				return;
+			}
+		}
+		try {
+			writer.append(first + "," + -1 + ",");
+			writer.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println("First move: " + (first + 1));
+		System.out.println("Remis");
 	}
 
 	public void setDroppedTrue() {

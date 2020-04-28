@@ -17,8 +17,8 @@ public abstract class ComputerPlayer {
 	
 	public String getResearch() {
 		double avgTime = thinkingTimeSum/movesCounter;
-		if (playerNum==1)
-			return (movesCounter+1) + "\n" + avgTime;
+		if (playerNum==0)
+			return (movesCounter+1) + "," + avgTime;
 		return movesCounter + "," + avgTime;
 	}
 	

@@ -31,6 +31,8 @@ public class AlphaBetaPlayer extends ComputerPlayer {
 		} else {
 			bestVal = Integer.MAX_VALUE;
 		}
+		int alpha = Integer.MIN_VALUE;
+		int beta = Integer.MAX_VALUE;
 		for (int i = 0; i < game.getWidth(); i++) {
 			if (!game.isColumnFull(i)) {
 				Board newBoard = (Board) game.clone();
@@ -38,18 +40,24 @@ public class AlphaBetaPlayer extends ComputerPlayer {
 
 				int moveVal;
 				if (playerNum == 1) {
-					moveVal = minmax(newBoard, 0, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
+					moveVal = minmax(newBoard, 0, false, alpha, beta);
 					if (moveVal > bestVal) {
 						bestMove = i;
 						bestVal = moveVal;
 					}
+					alpha = Math.max(alpha, bestVal);
+					if(beta<=alpha)
+						break;
 					System.out.println(moveVal+" "+bestVal);
 				} else {
-					moveVal = minmax(newBoard, 0, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
+					moveVal = minmax(newBoard, 0, true, alpha, beta);
 					if (moveVal < bestVal) {
 						bestMove = i;
 						bestVal = moveVal;
 					}
+					beta = Math.min(beta,  bestVal);
+					if (beta<=alpha)
+						break;
 					System.out.println(moveVal+" "+bestVal);
 				}
 			}			
