@@ -1,3 +1,5 @@
+package players;
+import game.Board;
 
 public class MinMaxPlayer extends ComputerPlayer {
 
@@ -8,7 +10,7 @@ public class MinMaxPlayer extends ComputerPlayer {
 		super(game,playerNumber);
 		this.maxDepth = maxDepth;
 		this.wonPoints = wonPoints;
-		this.algorithmInfo="MinMax,"+maxDepth;
+		this.setAlgorithmInfo("MinMax,"+maxDepth);
 	}
 
 	public MinMaxPlayer(Board game, int playerNumber, int maxDepth) {

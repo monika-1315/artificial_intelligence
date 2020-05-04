@@ -1,8 +1,9 @@
+package game;
 import java.util.Arrays;
 
 public class Board {
 
-	static final char[] PLAYERS = { 'O', 'X' };
+	public static final char[] PLAYERS = { 'O', 'X' };
 	static final String[] PLAYERS_COL = { "yellow", "red" };
 	
 	public static char[] getPlayers() {
@@ -109,7 +110,7 @@ public class Board {
 		return true;
 	}
 
-	boolean isWinningPlay() {
+	public boolean isWinningPlay() {
 		if (lastCol == -1) {
 			System.err.println("No move has been made yet");
 			return false;
@@ -129,7 +130,7 @@ public class Board {
 		return grid[lastTop][lastCol];
 	}
 
-	boolean drop(char symbol, int col) {
+	public boolean drop(char symbol, int col) {
 		if (!(0 <= col && col < width)) {
 //			System.out.println("Column must be between 0 and " + (width - 1));
 			return false;

@@ -1,3 +1,5 @@
+package players;
+import game.Board;
 
 public abstract class ComputerPlayer {
 
@@ -5,7 +7,7 @@ public abstract class ComputerPlayer {
 	protected int playerNum;
 	protected int movesCounter=0;
 	protected long thinkingTimeSum=0;
-	protected String algorithmInfo;
+	private String algorithmInfo;
 	
 	public ComputerPlayer(Board game, int playerNum) {
 		super();
@@ -23,6 +25,14 @@ public abstract class ComputerPlayer {
 	}
 	
 	public String algInfo() {
-		return algorithmInfo + "," ;
+		return getAlgorithmInfo() + "," ;
+	}
+
+	public String getAlgorithmInfo() {
+		return algorithmInfo;
+	}
+
+	public void setAlgorithmInfo(String algorithmInfo) {
+		this.algorithmInfo = algorithmInfo;
 	}
 }

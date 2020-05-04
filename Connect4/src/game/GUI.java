@@ -1,3 +1,4 @@
+package game;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,6 +19,11 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+
+import players.AlphaBetaPlayer;
+import players.ComputerPlayer;
+import players.MinMaxPlayer;
+import players.RandomPlayer;
 
 public class GUI {
 

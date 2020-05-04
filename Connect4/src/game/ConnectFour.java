@@ -1,7 +1,10 @@
+package game;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+
+import players.ComputerPlayer;
 
 public class ConnectFour {
 
@@ -80,11 +83,11 @@ public class ConnectFour {
 		try {
 			writer.append("\n");
 			if (ai1 != null)
-				writer.append(ai1.algorithmInfo + ",");
+				writer.append(ai1.getAlgorithmInfo() + ",");
 			else
 				writer.append("Human,,");
 			if (ai2 != null)
-				writer.append(ai2.algorithmInfo + ",");
+				writer.append(ai2.getAlgorithmInfo() + ",");
 			else
 				writer.append("Human,,");
 		} catch (IOException e1) {
@@ -210,11 +213,11 @@ public class ConnectFour {
 		try {
 			writer.append("\n");
 
-			writer.append(ai1.algorithmInfo + ",");
-			System.out.println(ai1.algorithmInfo);
+			writer.append(ai1.getAlgorithmInfo() + ",");
+			System.out.println(ai1.getAlgorithmInfo());
 
-			writer.append(ai2.algorithmInfo + ",");
-			System.out.println(ai2.algorithmInfo);
+			writer.append(ai2.getAlgorithmInfo() + ",");
+			System.out.println(ai2.getAlgorithmInfo());
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

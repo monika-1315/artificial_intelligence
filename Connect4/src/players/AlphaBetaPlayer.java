@@ -1,3 +1,5 @@
+package players;
+import game.Board;
 
 public class AlphaBetaPlayer extends ComputerPlayer {
 
@@ -9,7 +11,7 @@ public class AlphaBetaPlayer extends ComputerPlayer {
 		super(game,playerNumber);
 		this.maxDepth = maxDepth;
 		this.wonPoints = wonPoints;
-		this.algorithmInfo="AlphaBeta,"+maxDepth;
+		this.setAlgorithmInfo("AlphaBeta,"+maxDepth);
 	}
 
 	public AlphaBetaPlayer(Board game, int playerNumber, int maxDepth) {
