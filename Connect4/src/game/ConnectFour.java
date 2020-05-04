@@ -216,7 +216,7 @@ public class ConnectFour {
 			writer.append(ai1.algInfo());
 			System.out.println(ai1.algInfo());
 
-			writer.append(ai2.algInfo() + ",");
+			writer.append(ai2.algInfo());
 			System.out.println(ai2.algInfo());
 		} catch (IOException e1) {
 			e1.printStackTrace();

@@ -6,22 +6,18 @@ import game.Board;
 
 public class AlphaBetaPlayer extends ComputerPlayer {
 
-	private int wonPoints = 100;
 	private int maxDepth;
 
-	public AlphaBetaPlayer(Board game, int playerNumber, int maxDepth, int wonPoints, Evaluator eval) {
+	public AlphaBetaPlayer(Board game, int playerNumber, int maxDepth, Evaluator eval) {
 		super(game, playerNumber, eval);
 		this.maxDepth = maxDepth;
-		this.wonPoints = wonPoints;
 		this.setAlgorithmInfo("AlphaBeta," + maxDepth);
 	}
 
-	public AlphaBetaPlayer(Board game, int playerNumber, int maxDepth, Evaluator eval) {
-		this(game, playerNumber, maxDepth, maxDepth * 2, eval);
-	}
+	
 
 	public AlphaBetaPlayer(Board game) {
-		this(game, 1, 5, 2, new SimpleEvaluator());
+		this(game, 1, 5, new SimpleEvaluator());
 	}
 
 	@Override

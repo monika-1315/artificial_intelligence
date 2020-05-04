@@ -5,22 +5,18 @@ import game.Board;
 
 public class MinMaxPlayer extends ComputerPlayer {
 
-	private int wonPoints = 100;
+	
 	private int maxDepth;
 
-	public MinMaxPlayer(Board game, int playerNumber, int maxDepth, int wonPoints, Evaluator eval) {
+	public MinMaxPlayer(Board game, int playerNumber, int maxDepth,  Evaluator eval) {
 		super(game,playerNumber, eval);
 		this.maxDepth = maxDepth;
-		this.wonPoints = wonPoints;
 		this.setAlgorithmInfo("MinMax,"+maxDepth);
 	}
 
-	public MinMaxPlayer(Board game, int playerNumber, int maxDepth, Evaluator eval) {
-		this(game,playerNumber, maxDepth, maxDepth * 2, eval);
-	}
-
+	
 	public MinMaxPlayer(Board game) {
-		this(game,1,5, 2, new SimpleEvaluator());
+		this(game,1,5, new SimpleEvaluator());
 	}
 
 	@Override

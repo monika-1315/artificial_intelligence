@@ -14,7 +14,7 @@ public class ThreeEvaluator extends Evaluator {
 		if (board.isWinningPlay()) {
 			value= wonPoints - depth;
 		} else if (hasThree(board)) {
-			value=(int)(0.7*wonPoints) - depth;
+			value=(int)(0.4*wonPoints);
 		}
 		if (board.getLastPlayerSymbol() == Board.PLAYERS[1])
 			return value;
@@ -27,8 +27,22 @@ public class ThreeEvaluator extends Evaluator {
 		String streak = "" + sym + sym + sym + ".";
 		if (Board.contains(board.horizontal(), streak) || Board.contains(board.vertical(), streak) || Board.contains(board.slashDiagonal(), streak)
 				|| Board.contains(board.backslashDiagonal(), streak)) {
-//			System.out.println("It works!\n");
-			return false;
+			return true;
+		}
+		streak = "." + sym + sym + sym ;
+		if (Board.contains(board.horizontal(), streak) || Board.contains(board.vertical(), streak) || Board.contains(board.slashDiagonal(), streak)
+				|| Board.contains(board.backslashDiagonal(), streak)) {
+			return true;
+		}
+		streak = "" + sym +"."+ sym + sym ;
+		if (Board.contains(board.horizontal(), streak) || Board.contains(board.vertical(), streak) || Board.contains(board.slashDiagonal(), streak)
+				|| Board.contains(board.backslashDiagonal(), streak)) {
+			return true;
+		}
+		streak = "" + sym + sym+"." + sym ;
+		if (Board.contains(board.horizontal(), streak) || Board.contains(board.vertical(), streak) || Board.contains(board.slashDiagonal(), streak)
+				|| Board.contains(board.backslashDiagonal(), streak)) {
+			return true;
 		}
 		return false;
 	}
