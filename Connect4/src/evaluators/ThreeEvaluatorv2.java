@@ -122,9 +122,7 @@ public class ThreeEvaluatorv2 extends Evaluator {
 			if(i>=0) {
 				int newVal=
 						(int)(POINTS_FOR_THREE*wonPoints)-1 - 
-						checkEmptyCell(
-								indexes[i][0], 
-								indexes[i][1]) ;
+						checkEmptyCell(indexes[i][0], indexes[i][1]) ;
 				if(newVal==0)
 					newVal=1;
 				if(newVal>value)
