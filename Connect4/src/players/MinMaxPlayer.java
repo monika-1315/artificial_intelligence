@@ -1,4 +1,6 @@
 package players;
+import evaluators.Evaluator;
+import evaluators.SimpleEvaluator;
 import game.Board;
 
 public class MinMaxPlayer extends ComputerPlayer {
@@ -6,19 +8,19 @@ public class MinMaxPlayer extends ComputerPlayer {
 	private int wonPoints = 100;
 	private int maxDepth;
 
-	public MinMaxPlayer(Board game, int playerNumber, int maxDepth, int wonPoints) {
-		super(game,playerNumber);
+	public MinMaxPlayer(Board game, int playerNumber, int maxDepth, int wonPoints, Evaluator eval) {
+		super(game,playerNumber, eval);
 		this.maxDepth = maxDepth;
 		this.wonPoints = wonPoints;
 		this.setAlgorithmInfo("MinMax,"+maxDepth);
 	}
 
-	public MinMaxPlayer(Board game, int playerNumber, int maxDepth) {
-		this(game,playerNumber, maxDepth, maxDepth * 2);
+	public MinMaxPlayer(Board game, int playerNumber, int maxDepth, Evaluator eval) {
+		this(game,playerNumber, maxDepth, maxDepth * 2, eval);
 	}
 
 	public MinMaxPlayer(Board game) {
-		this(game,1,5, 2);
+		this(game,1,5, 2, new SimpleEvaluator());
 	}
 
 	@Override
@@ -66,14 +68,8 @@ public class MinMaxPlayer extends ComputerPlayer {
 	}
 
 	private int evaluate(Board board, int depth) {
-		if (board.isWinningPlay()) {
-			if (board.getLastPlayerSymbol() == Board.PLAYERS[1])
-//			if (board.getLastPlayerSymbol() == Board.PLAYERS[playerNum])	
-				return wonPoints - depth;
-			else
-				return -wonPoints + depth;
-		}
-		return 0;
+		
+		return eval.evaluate(board, depth);
 	}
 
 	private int minmax(Board board, int depth, Boolean isMax) {

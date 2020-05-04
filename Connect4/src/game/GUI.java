@@ -20,6 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
+import evaluators.SimpleEvaluator;
 import players.AlphaBetaPlayer;
 import players.ComputerPlayer;
 import players.MinMaxPlayer;
@@ -124,11 +125,11 @@ public class GUI {
 
 	private MinMaxPlayer getMinMaxPlayer(int i) {
 		int depth=getDepth();
-		return new MinMaxPlayer(board, i, depth);
+		return new MinMaxPlayer(board, i, depth, new SimpleEvaluator());
 	}
 	private AlphaBetaPlayer getAlphaBetaPlayer(int i) {
 		int depth=getDepth();
-		return new AlphaBetaPlayer(board, i, depth);
+		return new AlphaBetaPlayer(board, i, depth, new SimpleEvaluator());
 	}
 
 	private int getDepth() {

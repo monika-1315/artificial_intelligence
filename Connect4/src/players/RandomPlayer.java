@@ -4,7 +4,7 @@ import game.Board;
 public class RandomPlayer extends ComputerPlayer {
 
 	public RandomPlayer(Board game, int playerNum) {
-		super(game, playerNum);
+		super(game, playerNum, null);
 		this.setAlgorithmInfo("Random,");
 	}
 

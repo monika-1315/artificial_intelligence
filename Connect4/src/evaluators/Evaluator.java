@@ -1,7 +1,16 @@
 package evaluators;
 import game.Board;
 
-public interface Evaluator {
+public abstract class Evaluator {
+	
+	protected int wonPoints;
 
-	public int evaluate(Board board, int depth, int maxPoints);
+	public Evaluator(int wonPoints) {
+		super();
+		this.wonPoints = wonPoints;
+	}
+
+	public abstract int evaluate(Board board, int depth);
+	
+	public abstract String toString();
 }

@@ -1,4 +1,5 @@
 package players;
+import evaluators.Evaluator;
 import game.Board;
 
 public abstract class ComputerPlayer {
@@ -8,11 +9,13 @@ public abstract class ComputerPlayer {
 	protected int movesCounter=0;
 	protected long thinkingTimeSum=0;
 	private String algorithmInfo;
+	protected Evaluator eval;
 	
-	public ComputerPlayer(Board game, int playerNum) {
+	public ComputerPlayer(Board game, int playerNum, Evaluator eval) {
 		super();
 		this.game = game;
 		this.playerNum=playerNum;
+		this.eval=eval;
 	}
 	
 	public abstract int nextMove();
