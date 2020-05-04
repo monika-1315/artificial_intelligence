@@ -20,7 +20,9 @@ import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
+import evaluators.Evaluator;
 import evaluators.SimpleEvaluator;
+import evaluators.ThreeEvaluator;
 import players.AlphaBetaPlayer;
 import players.ComputerPlayer;
 import players.MinMaxPlayer;
@@ -30,7 +32,7 @@ public class GUI {
 
 	private static final String[] playersOptions = new String[] { "Human Player", "Random - Computer Player",
 			"MinMax Computer Player", "AlphaBeta Computer Player" };
-	private static final String[] evalOptions = new String[] { "Simple (points for win)" };
+	private static final String[] evalOptions = new String[] { "Simple (points for win)", "Scoring 3 in a row" };
 	private ConnectFour game;
 	private volatile Board board;
 	private int player = 0;
@@ -123,16 +125,27 @@ public class GUI {
 		}
 	}
 
-	private MinMaxPlayer getMinMaxPlayer(int i) {
-		int depth=getDepth();
-		return new MinMaxPlayer(board, i, depth, new SimpleEvaluator());
+	private MinMaxPlayer getMinMaxPlayer(int playerNum) {
+		int[] params=getDepthEval();
+		return new MinMaxPlayer(board, playerNum, params[0], getEval(params[1], params[0]));
 	}
-	private AlphaBetaPlayer getAlphaBetaPlayer(int i) {
-		int depth=getDepth();
-		return new AlphaBetaPlayer(board, i, depth, new SimpleEvaluator());
+	private AlphaBetaPlayer getAlphaBetaPlayer(int playerNum) {
+		int[] params=getDepthEval();
+		return new AlphaBetaPlayer(board, playerNum, params[0], getEval(params[1], params[0]));
 	}
 
-	private int getDepth() {
+	private Evaluator getEval(int i, int depth) {
+		System.out.println("I: "+i+"depth:"+depth);
+		switch (i) {
+		case (0):
+			return new SimpleEvaluator(2*depth);
+		case (1):
+			return new ThreeEvaluator(2*depth);
+		default:
+			return new SimpleEvaluator();
+		}
+	}
+	private int[] getDepthEval() {
 		JFrame dialog = new JFrame();
 		JPanel panel = new JPanel();
 		dialog.setLayout(new FlowLayout());
@@ -159,7 +172,8 @@ public class GUI {
 		} while (waitForUser);
 
 		dialog.setVisible(false);
-		return (int) spinner.getValue();
+		int[] ret= {(int) spinner.getValue(), evalList.getSelectedIndex()};
+		return ret;
 	}
 	void setInfo(String text) {
 		info.setText(text);

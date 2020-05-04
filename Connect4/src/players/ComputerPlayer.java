@@ -28,7 +28,7 @@ public abstract class ComputerPlayer {
 	}
 	
 	public String algInfo() {
-		return getAlgorithmInfo() + "," ;
+		return getAlgorithmInfo() + "," +eval.toString()+",";
 	}
 
 	public String getAlgorithmInfo() {

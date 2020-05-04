@@ -15,7 +15,7 @@ public class ConnectFour {
 	public ConnectFour(int w, int h) {
 		board = new Board(w, h);
 		try {
-			writer = new BufferedWriter(new FileWriter("Connect4.csv", true));
+			writer = new BufferedWriter(new FileWriter("Connect4_.csv", true));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -24,7 +24,7 @@ public class ConnectFour {
 	public ConnectFour() {
 		board = new Board(7, 6);
 		try {
-			writer = new BufferedWriter(new FileWriter("Connect4.csv", true));
+			writer = new BufferedWriter(new FileWriter("Connect4_.csv", true));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -33,7 +33,7 @@ public class ConnectFour {
 	public void clearBoard() {
 		board = new Board(7, 6);
 		try {
-			writer = new BufferedWriter(new FileWriter("Connect4.csv", true));
+			writer = new BufferedWriter(new FileWriter("Connect4_.csv", true));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -83,13 +83,13 @@ public class ConnectFour {
 		try {
 			writer.append("\n");
 			if (ai1 != null)
-				writer.append(ai1.getAlgorithmInfo() + ",");
+				writer.append(ai1.algInfo());
 			else
-				writer.append("Human,,");
+				writer.append("Human,,,");
 			if (ai2 != null)
-				writer.append(ai2.getAlgorithmInfo() + ",");
+				writer.append(ai2.algInfo());
 			else
-				writer.append("Human,,");
+				writer.append("Human,,,");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -213,11 +213,11 @@ public class ConnectFour {
 		try {
 			writer.append("\n");
 
-			writer.append(ai1.getAlgorithmInfo() + ",");
-			System.out.println(ai1.getAlgorithmInfo());
+			writer.append(ai1.algInfo());
+			System.out.println(ai1.algInfo());
 
-			writer.append(ai2.getAlgorithmInfo() + ",");
-			System.out.println(ai2.getAlgorithmInfo());
+			writer.append(ai2.algInfo() + ",");
+			System.out.println(ai2.algInfo());
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

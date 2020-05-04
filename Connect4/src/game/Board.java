@@ -52,11 +52,11 @@ public class Board {
 		return ret + nums;
 	}
 	
-	private String horizontal() {
+	public String horizontal() {
 		return new String(grid[lastTop]);
 	}
 
-	private String vertical() {
+	public String vertical() {
 
 		StringBuilder sb = new StringBuilder(height);
 		for (int h = 0; h < height; h++) {
@@ -67,7 +67,7 @@ public class Board {
 
 	}
 
-	private String slashDiagonal() {
+	public String slashDiagonal() {
 
 		StringBuilder sb = new StringBuilder(height);
 
@@ -81,7 +81,7 @@ public class Board {
 		return sb.toString();
 	}
 
-	private String backslashDiagonal() {
+	public String backslashDiagonal() {
 
 		StringBuilder sb = new StringBuilder(height);
 
