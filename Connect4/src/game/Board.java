@@ -130,6 +130,14 @@ public class Board {
 		return grid[lastTop][lastCol];
 	}
 
+	public int getLastCol() {
+		return lastCol;
+	}
+
+	public int getLastTop() {
+		return lastTop;
+	}
+
 	public boolean drop(char symbol, int col) {
 		if (!(0 <= col && col < width)) {
 //			System.out.println("Column must be between 0 and " + (width - 1));

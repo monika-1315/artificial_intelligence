@@ -11,9 +11,9 @@ public class App {
 
 	public static void main(String[] args) {
 //		runRandomTests();
-		runTests();
-//		GUI gui=new GUI();
-//		gui.play();
+//		runTests();
+		GUI gui=new GUI();
+		gui.play();
 	}
 
 	private static void runTests() {

@@ -23,6 +23,7 @@ import javax.swing.SpinnerNumberModel;
 import evaluators.Evaluator;
 import evaluators.SimpleEvaluator;
 import evaluators.ThreeEvaluator;
+import evaluators.ThreeEvaluatorv2;
 import players.AlphaBetaPlayer;
 import players.ComputerPlayer;
 import players.MinMaxPlayer;
@@ -32,7 +33,7 @@ public class GUI {
 
 	private static final String[] playersOptions = new String[] { "Human Player", "Random - Computer Player",
 			"MinMax Computer Player", "AlphaBeta Computer Player" };
-	private static final String[] evalOptions = new String[] { "Simple (points for win)", "Scoring 3 in a row" };
+	private static final String[] evalOptions = new String[] { "Simple (points for win)", "Scoring 3 in a row", "Better scoring 3 in a row" };
 	private ConnectFour game;
 	private volatile Board board;
 	private int player = 0;
@@ -135,12 +136,14 @@ public class GUI {
 	}
 
 	private Evaluator getEval(int i, int depth) {
-		System.out.println("I: "+i+"depth:"+depth);
+//		System.out.println("I: "+i+"depth:"+depth);
 		switch (i) {
 		case (0):
 			return new SimpleEvaluator(2*depth);
 		case (1):
 			return new ThreeEvaluator(2*depth);
+		case (2):
+			return new ThreeEvaluatorv2(2*depth);
 		default:
 			return new SimpleEvaluator();
 		}
