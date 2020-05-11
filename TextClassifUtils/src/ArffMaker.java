@@ -20,28 +20,33 @@ public class ArffMaker {
 
 		BufferedWriter writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream("Data.arff"), StandardCharsets.UTF_8));
+		writer.append("@relation wikidata\n"
+				+ "@attribute text string\n@attribute class string\n\n@data\n");
 		Scanner reader;
 		File folder = new File("Data");
 		File[] listOfFiles = folder.listFiles();
 
 		int i = 0;
 		for (File file : listOfFiles) {
-			if (i > 20)
-				break;
+//			if (i > 20)
+//				break;
 			if (file.isFile()) {
 				reader = new Scanner(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
+				writer.append("\"");
 				while (reader.hasNextLine()) {
 					String line = reader.nextLine();
-					writer.append(line);
+					String clnLine = line.replaceAll("'", "").replaceAll("\"", "");
+					writer.append(clnLine);
 				}
 
 				String className = file.getName().split("_")[0];
 //				System.out.println(className);
-				writer.append(" " + className + "\n");
+				writer.append("\" " + className + "\n");
 				writer.flush();
 			}
 			i++;
 		}
 		writer.close();
+//		System.out.println(i);
 	}
 }
