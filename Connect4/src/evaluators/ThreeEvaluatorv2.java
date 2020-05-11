@@ -1,6 +1,5 @@
 package evaluators;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 import game.Board;
 
@@ -160,7 +159,7 @@ public class ThreeEvaluatorv2 extends Evaluator {
 
 	@Override
 	public String toString() {
-		return "ThreeEval";
+		return "ThreeEval2";
 	}
 
 }

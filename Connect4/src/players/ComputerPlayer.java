@@ -28,7 +28,10 @@ public abstract class ComputerPlayer {
 	}
 	
 	public String algInfo() {
+		if(eval!=null)
 		return getAlgorithmInfo() + "," +eval.toString()+",";
+		else
+			return getAlgorithmInfo() + ",,";
 	}
 
 	public String getAlgorithmInfo() {
